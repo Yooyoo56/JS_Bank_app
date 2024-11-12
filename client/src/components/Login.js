@@ -20,27 +20,27 @@ const Login = ({ setToken }) => {
 			localStorage.setItem("token", token);
 			navigate("/home"); // 로그인 성공 시 홈으로 이동
 		} catch (error) {
-			setMessage(error.response?.data.message || "로그인 실패");
+			setMessage(error.response?.data.message || "Login failed");
 		}
 	};
 
 	return (
 		<div>
-			<h2>로그인</h2>
+			<h2>🩵 Login🩵 </h2>
 			<form onSubmit={handleLogin}>
 				<input
 					type="email"
-					placeholder="이메일"
+					placeholder="example@gmail.com"
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
 				/>
 				<input
 					type="password"
-					placeholder="비밀번호"
+					placeholder="password"
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
-				<button type="submit">로그인</button>
+				<button type="submit">Login</button>
 			</form>
 			{message && <p>{message}</p>}
 		</div>

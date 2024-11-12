@@ -1,4 +1,5 @@
-require("dotenv").config();
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -8,6 +9,7 @@ const authRoutes = require("./routes/authRoutes");
 const app = express();
 
 // localhost (client port = 3000)
+// middleware
 app.use(
 	cors({
 		origin: "http://localhost:3000", // 프론트엔드 React 앱의 주소

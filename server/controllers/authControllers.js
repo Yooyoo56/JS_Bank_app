@@ -1,8 +1,8 @@
 const bcrypt = require("bcryptjs");
-const validator = require("validator");
+const jwt = require("jsonwebtoken"); // jwt 모듈 임포트 추가
 const User = require("../models/User");
 
-// For register user
+// For register user // sign up
 const registerUser = async (req, res) => {
 	const { email, password } = req.body;
 
@@ -65,6 +65,7 @@ const loginUser = async (req, res) => {
 		});
 		res.status(200).json({ token, message: "로그인 성공" });
 	} catch (error) {
+		console.error("로그인 오류:", error);
 		res.status(500).json({ message: "서버 오류" });
 	}
 };

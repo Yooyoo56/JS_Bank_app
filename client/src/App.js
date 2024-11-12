@@ -12,7 +12,7 @@ const App = () => {
 		<>
 			<Navbar token={token} setToken={setToken} />
 			<Routes>
-				<Route path="/" element={<Login setToken={setToken} />} />
+				<Route path="/login" element={<Login setToken={setToken} />} />
 				<Route
 					path="/home"
 					element={token ? <Home /> : <Login setToken={setToken} />}

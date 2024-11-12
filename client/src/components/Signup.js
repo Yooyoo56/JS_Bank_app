@@ -13,29 +13,29 @@ const Signup = () => {
 				email,
 				password,
 			});
-			setMessage(response.data.message || "회원가입 성공!");
+			setMessage(response.data.message || "😘 created user account!!");
 		} catch (error) {
-			setMessage(error.response?.data.message || "회원가입 실패");
+			setMessage(error.response?.data.message || "failed to create account 😣");
 		}
 	};
 
 	return (
 		<div>
-			<h2>회원가입</h2>
+			<h2>💚 Sign up 💚</h2>
 			<form onSubmit={handleSignup}>
 				<input
 					type="email"
-					placeholder="이메일"
+					placeholder="example@gmail.com"
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
 				/>
 				<input
 					type="password"
-					placeholder="비밀번호"
+					placeholder="password"
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
-				<button type="submit">회원가입</button>
+				<button type="submit">Sign up </button>
 			</form>
 			{message && <p>{message}</p>}
 		</div>
