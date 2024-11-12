@@ -4,7 +4,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
+// routers
 const authRoutes = require("./routes/authRoutes");
+const accountRoutes = require("./routes/compteBancaireRoutes"); //
 
 const app = express();
 
@@ -28,6 +30,7 @@ mongoose
 	.catch((err) => console.log("MongoDB 연결 실패:", err));
 
 app.use("/api", authRoutes);
+app.use("/api/accounts", accountRoutes);
 
 const PORT = process.env.PORT || 5500;
 app.listen(PORT, () => console.log(`서버가 ${PORT}번 포트에서 실행 중입니다.`));

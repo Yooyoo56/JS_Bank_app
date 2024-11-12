@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const Home = () => {
-	return <h2>Welcome to our main page!.</h2>;
+	const [userName, setUserName] = useState("");
+
+	useEffect(() => {
+		// Retrieve the name from localStorage
+		const name = localStorage.getItem("userName");
+		if (name) {
+			setUserName(name); // Set the name in state
+		}
+	}, []); // Empty dependency array ensures it runs only once when component mounts
+
+	return (
+		<div>
+			<h2>Welcome, {userName}!</h2>
+		</div>
+	);
 };
 
 export default Home;

@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import Signup from "./components/Signup";
+import ComptesBancaires from "./components/ComptesBancaires"; // Importer le composant
 
 const App = () => {
 	const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -18,6 +19,11 @@ const App = () => {
 					element={token ? <Home /> : <Login setToken={setToken} />}
 				/>
 				<Route path="/signup" element={<Signup />} />
+				{/* Nouvelle route pour les comptes bancaires */}
+				<Route
+					path="/comptes-bancaires"
+					element={token ? <ComptesBancaires /> : <Login setToken={setToken} />}
+				/>
 			</Routes>
 		</>
 	);

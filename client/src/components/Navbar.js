@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const Navbar = ({ token, setToken }) => {
 	const handleLogout = () => {
-		setToken(null); // Clear token from state
-		localStorage.removeItem("token"); // Remove token from localStorage
+		localStorage.removeItem("token");
+		setToken("");
 	};
 
 	return (
@@ -13,7 +13,17 @@ const Navbar = ({ token, setToken }) => {
 				<li>
 					<Link to="/home">Home</Link>
 				</li>
-				{!token ? (
+				{token && (
+					<>
+						<li>
+							<Link to="/comptes-bancaires">Comptes Bancaires</Link>
+						</li>
+						<li>
+							<button onClick={handleLogout}>Logout</button>
+						</li>
+					</>
+				)}
+				{!token && (
 					<>
 						<li>
 							<Link to="/login">Login</Link>
@@ -22,10 +32,6 @@ const Navbar = ({ token, setToken }) => {
 							<Link to="/signup">Signup</Link>
 						</li>
 					</>
-				) : (
-					<li>
-						<button onClick={handleLogout}>Logout</button>
-					</li>
 				)}
 			</ul>
 		</nav>

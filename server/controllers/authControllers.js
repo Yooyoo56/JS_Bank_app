@@ -1,10 +1,18 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken"); // jwt 모듈 임포트 추가
 const User = require("../models/User");
+const validator = require("validator");
 
 // For register user // sign up
 const registerUser = async (req, res) => {
-	const { email, password } = req.body;
+	const { name, email, password } = req.body;
+
+	console.log("Received data:", { name, email, password });
+
+	// mandatory verification
+	if (!name) {
+		return res.status(400).send("Name is required");
+	}
 
 	// 이메일 유효성 검사
 	if (!validator.isEmail(email)) {
@@ -27,14 +35,14 @@ const registerUser = async (req, res) => {
 
 	// 새로운 사용자 생성
 	const newUser = new User({
+		name,
 		email,
 		password: hashedPassword,
 	});
 
 	try {
 		await newUser.save(); // Add user info in MongoDB
-
-		res.status(201).send("🎉 Successfully created account !🎉 ");
+		res.status(201).json({ message: "🎉 Successfully created account !🎉 " });
 	} catch (error) {
 		console.error("Error during creating the account:", error.message);
 		res.status(500).send("server error");
