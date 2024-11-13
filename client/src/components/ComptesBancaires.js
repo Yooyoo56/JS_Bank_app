@@ -38,13 +38,32 @@ const ComptesBancaires = () => {
   if (error) return <p>{error}</p>
 
   return (
-    <div>
-      <h2 className="text-center">Mes Comptes Bancaires</h2>
-      <ul>
+    <div className="w-11/12 mx-auto flex flex-col justify-center">
+      <h2 className="text-center font-bold mb-7 text-4xl">
+        Mes Comptes Bancaires
+      </h2>
+
+      <div className="shadow flex justify-center align-center p-5 mb-12">
+        <h3 className="font-semibold">Solde total : 3 000 €</h3>
+      </div>
+
+      <ul className="mx-3">
         {comptes.map((compte) => (
-          <li key={compte._id}>
-            <strong>Nom du compte :</strong> {compte.nomCompte} -{' '}
-            <strong>Solde :</strong> {compte.solde} €
+          <li key={compte._id} className="shadow p-5 rounded">
+            <div className="flex justify-between">
+              <p>Nom du compte :</p>
+              <p>{compte.nomCompte}</p>
+            </div>
+            <div className="flex justify-between">
+              <p>Solde :</p>
+              <p>{compte.solde} €</p>
+            </div>
+            {/* <strong className="font-medium">Nom du compte :</strong>{' '}
+            {compte.nomCompte} <strong className="font-medium">Solde :</strong>{' '}
+            {compte.solde} € */}
+            <a className="underline" href="/compteDetail.html">
+              Voir plus
+            </a>
           </li>
         ))}
       </ul>
