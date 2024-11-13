@@ -1,33 +1,31 @@
 const mongoose = require("mongoose");
 
-// Bank Account schema
-const compteBancaireSchema = new mongoose.Schema({
-	userId: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "User", // Reference to the User model
-		required: true,
-	},
-	accountName: {
-		type: String,
-		required: true,
-	},
-	balance: {
-		type: Number,
-		required: true,
-		default: 0,
-	},
-	transactions: [
-		{
-			type: {
-				type: String,
-				enum: ["credit", "debit"],
-				required: true,
-			},
-			amount: { type: Number, required: true },
-			date: { type: Date, default: Date.now },
-			description: { type: String },
-		},
-	],
-});
+const compteBancaireSchema = new mongoose.Schema(
+    {
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        name: { type: String, required: true },
+        nomCompte: {
+            type: String,
+            required: true,
+        },
+        solde: {
+            type: Number,
+            default: 0,
+        },
+        typeCompte: {
+            type: String,
+            required: true, // Ce champ est obligatoire
+            enum: ['Courant', 'Épargne'], // Liste des types possibles
+            default: 'Courant' // Valeur par défaut si non spécifiée
+        },
+    },
+    {
+        timestamps: true,
+    }
+);
 
-module.exports = mongoose.model("CompteBancaire", compteBancaireSchema);
+module.exports = mongoose.model("CompteBancaire", compteBancaireSchema,"compteBancaire");

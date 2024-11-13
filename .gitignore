@@ -1,5 +1,8 @@
 # Ignore node_modules folder in both client and server
 /node_modules/
+/server/node_modules
+/client/node_modules
+package-lock.json
 
 # Ignore .env files (for sensitive data like database URLs, API keys, etc.)
 *.env

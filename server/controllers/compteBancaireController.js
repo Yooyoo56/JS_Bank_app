@@ -5,14 +5,17 @@ const Transaction = require("../models/Transaction"); // Transaction model
 const getComptesBancaires = async (req, res) => {
 	try {
 		// Find accounts associated with the logged-in user (userId comes from JWT)
-		const comptes = await CompteBancaire.find({ userId: req.user.id }).populate(
+
+		const comptes = await CompteBancaire.find({ userId: req.userId }).populate(
 			"userId",
 			"name"
 		);
+		console.log("/////////////"+req.userId+"///" +comptes);
 
-		if (!comptes.length) {
-			return res.status(404).json({
-				message: "Aucun compte bancaire trouvé pour cet utilisateur.",
+		if (!comptes || comptes.length === 0) {
+			return res.status(200).json({
+			  message: "Aucun compte bancaire pour cet utilisateur.",
+			  comptes: []  // Retourne un tableau vide
 			});
 		}
 

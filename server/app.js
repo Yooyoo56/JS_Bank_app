@@ -7,6 +7,9 @@ const cors = require("cors");
 // routers
 const authRoutes = require("./routes/authRoutes");
 const accountRoutes = require("./routes/compteBancaireRoutes"); //
+const userRoutes = require("./routes/userRoutes");
+const transactionRoutes = require("./routes/transactionRoutes");
+
 
 const app = express();
 
@@ -29,9 +32,14 @@ mongoose
 	.then(() => console.log("MongoDB connected! ✅"))
 	.catch((err) => console.log("MongoDB connection failed! 😣:", err));
 
-app.use("/api", authRoutes);
+app.use("/api", authRoutes,);
 // account route
-app.use("/api/accounts", accountRoutes);
+app.use("/api", accountRoutes);
+
+app.use("/api", userRoutes);
+
+app.use("/api", transactionRoutes);
+
 
 const PORT = process.env.PORT || 5500;
 app.listen(PORT, () => console.log(`Server is connected to ${PORT} ✅`));

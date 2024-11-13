@@ -10,18 +10,20 @@ const ComptesBancaires = ({ token }) => {
 		const fetchComptes = async () => {
 			setLoading(true);
 			try {
+				const token = localStorage.getItem("token");
 				const response = await fetch("http://localhost:5500/api/accounts", {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
 				});
-				if (!response.ok) {
+				if (!response.ok) {	
 					throw new Error("Failed to fetch accounts");
 				}
 				const data = await response.json();
+				console.log(data); // Vérifier la structure des données reçues
 				setComptes(data);
 			} catch (err) {
-				setError("Erreur lors de la récupération des comptes");
+				setError("Erreur lors de la récupération des comptes ");
 				console.error(err.message);
 			} finally {
 				setLoading(false);
@@ -37,16 +39,18 @@ const ComptesBancaires = ({ token }) => {
 			{loading ? (
 				<p>Chargement des comptes...</p>
 			) : (
-				comptes.map((compte) => (
-					<div key={compte._id}>
-						<h3>
-							{compte.accountName} (Propriétaire: {compte.userId.name})
-						</h3>
-						<p>Solde: {compte.balance}€</p>
-
-						{/* Display transactions if they exist */}
-					</div>
-				))
+				Array.isArray(comptes) ? (
+					comptes.map((compte) => (
+						<div key={compte._id}>
+							<h3>
+								{compte.accountName} (Propriétaire: {compte.userId.name})
+							</h3>
+							<p>Solde: {compte.balance}€</p>
+						</div>
+					))
+				) : (
+					<p>Aucun compte trouvé.</p>
+				)
 			)}
 		</div>
 	);
