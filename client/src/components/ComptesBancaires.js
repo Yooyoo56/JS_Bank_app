@@ -37,6 +37,12 @@ const ComptesBancaires = () => {
 
   if (error) return <p>{error}</p>
 
+  // Calcul de la somme des soldes des comptes
+  const totalSolde = comptes.reduce(
+    (acc, compte) => acc + parseFloat(compte.solde),
+    0,
+  )
+
   return (
     <div className="w-11/12 mx-auto flex flex-col justify-center">
       <h2 className="text-center font-bold mb-7 text-4xl">
@@ -44,7 +50,9 @@ const ComptesBancaires = () => {
       </h2>
 
       <div className="shadow flex justify-center align-center p-5 mb-12">
-        <h3 className="font-semibold">Solde total : 3 000 €</h3>
+        <h3 className="font-semibold">
+          Solde total : {totalSolde.toFixed(2)} €
+        </h3>
       </div>
 
       <ul className="mx-3">

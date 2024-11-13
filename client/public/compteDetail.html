@@ -10,15 +10,15 @@
   <body>
     <div class="container flex flex-col justify-center items-center">
       <nav class="flex justify-around items-center m-5">
-        <a class="mx-2" href="/pages/index.html">Accueil</a>
-        <a class="mx-2" href="/pages/signup.html">Inscription</a>
-        <a class="mx-2" href="/pages/login.html">Connexion</a> |
-        <a class="mx-2" href="/pages/dashboard.html">Tableau de bord</a>
+        <a class="mx-2" href="/home">Home</a>
+        <a class="mx-2" href="/comptes-bancaires">Comptes bancaires</a> |
+        <a class="mx-2" href="/logout">Logout</a>
       </nav>
 
-      <div>
-        <h1 class="text-center font-bold mb-7 text-4xl">Nom du compte</h1>
+      <h1 class="text-center font-bold mb-7 text-4xl">Nom du compte</h1>
 
+      <div id="transactions-container">
+        {#
         <div class="card shadow p-5 rounded">
           <p class="font-medium">Transactions</p>
           <div class="flex justify-between">
@@ -58,35 +58,16 @@
             <p>950 €</p>
           </div>
         </div>
-
-        <div class="card shadow p-5 rounded">
-          <p class="font-medium">Transactions</p>
-          <div class="flex justify-between">
-            <p>Type :</p>
-            <p>Dépôt</p>
-          </div>
-          <div class="flex justify-between">
-            <p>Date :</p>
-            <p>13/11/2024</p>
-          </div>
-          <div class="flex justify-between">
-            <p>Montant :</p>
-            <p>50 €</p>
-          </div>
-          <div class="flex justify-between">
-            <p>Solde :</p>
-            <p>950 €</p>
-          </div>
-        </div>
+        #}
       </div>
 
       <div class="absolute bottom-12 right-12">
-        <a
-          class="p-3 bg-sky-600 text-white rounded"
-          href="/pages/newTransaction.html"
+        <a class="p-3 bg-sky-600 text-white rounded" href="/newTransaction.html"
           >Ajouter une transaction</a
         >
       </div>
     </div>
+
+    <script src="/js/compteDetail.js"></script>
   </body>
 </html>
