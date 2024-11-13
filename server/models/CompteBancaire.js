@@ -1,25 +1,33 @@
 const mongoose = require("mongoose");
 
-const compteBancaireSchema = new mongoose.Schema(
-	{
-		userId: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "User",
-			required: true,
-		},
-		name: { type: String, required: true },
-		nomCompte: {
-			type: String,
-			required: true,
-		},
-		solde: {
-			type: Number,
-			default: 0,
-		},
+// Bank Account schema
+const compteBancaireSchema = new mongoose.Schema({
+	userId: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "User", // Reference to the User model
+		required: true,
 	},
-	{
-		timestamps: true,
-	}
-);
+	accountName: {
+		type: String,
+		required: true,
+	},
+	balance: {
+		type: Number,
+		required: true,
+		default: 0,
+	},
+	transactions: [
+		{
+			type: {
+				type: String,
+				enum: ["credit", "debit"],
+				required: true,
+			},
+			amount: { type: Number, required: true },
+			date: { type: Date, default: Date.now },
+			description: { type: String },
+		},
+	],
+});
 
 module.exports = mongoose.model("CompteBancaire", compteBancaireSchema);

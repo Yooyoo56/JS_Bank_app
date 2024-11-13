@@ -26,11 +26,12 @@ mongoose
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
-	.then(() => console.log("MongoDB 연결 성공"))
-	.catch((err) => console.log("MongoDB 연결 실패:", err));
+	.then(() => console.log("MongoDB connected! ✅"))
+	.catch((err) => console.log("MongoDB connection failed! 😣:", err));
 
 app.use("/api", authRoutes);
+// account route
 app.use("/api/accounts", accountRoutes);
 
 const PORT = process.env.PORT || 5500;
-app.listen(PORT, () => console.log(`서버가 ${PORT}번 포트에서 실행 중입니다.`));
+app.listen(PORT, () => console.log(`Server is connected to ${PORT} ✅`));
