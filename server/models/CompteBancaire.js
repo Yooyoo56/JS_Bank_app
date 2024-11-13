@@ -7,6 +7,7 @@ const compteBancaireSchema = new mongoose.Schema(
 			ref: "User",
 			required: true,
 		},
+		name: { type: String, required: true },
 		nomCompte: {
 			type: String,
 			required: true,
