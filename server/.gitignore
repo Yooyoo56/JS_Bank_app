@@ -1,0 +1,16 @@
+# Node.js modules
+node_modules/
+
+# Environnements et configurations locales
+.env
+
+# Fichiers de logs
+*.log
+
+# Cache et artefacts
+.DS_Store
+.cache/
+dist/
+
+# Autres fichiers spécifiques
+*.temp
