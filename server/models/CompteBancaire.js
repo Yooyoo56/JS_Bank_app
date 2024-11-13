@@ -16,6 +16,12 @@ const compteBancaireSchema = new mongoose.Schema(
 			type: Number,
 			default: 0,
 		},
+		typeCompte: {
+			type: String,
+			required: true, // Ce champ est obligatoire
+			enum: ['Courant', 'Épargne'], // Liste des types possibles
+			default: 'Courant' // Valeur par défaut si non spécifiée
+		},
 	},
 	{
 		timestamps: true,
