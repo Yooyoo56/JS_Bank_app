@@ -1,52 +1,53 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 
-const ComptesBancaires = () => {
+const ComptesBancaires = ({ token }) => {
 	const [comptes, setComptes] = useState([]);
-	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(false);
 
+	// Fetch bank accounts for the logged-in user
 	useEffect(() => {
 		const fetchComptes = async () => {
+			setLoading(true);
 			try {
-				// Récupérer le token du localStorage
-				const token = localStorage.getItem("token");
-				const config = {
+				const response = await fetch("http://localhost:5500/api/accounts", {
 					headers: {
 						Authorization: `Bearer ${token}`,
 					},
-				};
-				// Assurez-vous d'utiliser le bon port (celui du backend)
-				const response = await axios.get(
-					"http://localhost:5500/api/accounts/comptes",
-					config
-				);
-				setComptes(response.data);
-			} catch (error) {
+				});
+				if (!response.ok) {
+					throw new Error("Failed to fetch accounts");
+				}
+				const data = await response.json();
+				setComptes(data);
+			} catch (err) {
 				setError("Erreur lors de la récupération des comptes");
-				console.error("Erreur:", error.message);
+				console.error(err.message);
 			} finally {
 				setLoading(false);
 			}
 		};
 		fetchComptes();
-	}, []);
-
-	if (loading) return <p>Chargement...</p>;
-
-	if (error) return <p>{error}</p>;
+	}, [token]);
 
 	return (
 		<div>
-			<h2>Mes Comptes Bancaires</h2>
-			<ul>
-				{comptes.map((compte) => (
-					<li key={compte._id}>
-						<strong>Nom du compte :</strong> {compte.nom} -{" "}
-						<strong>Solde :</strong> {compte.solde} €
-					</li>
-				))}
-			</ul>
+			<h2>Liste des Comptes Bancaires</h2>
+			{error && <p style={{ color: "red" }}>{error}</p>}
+			{loading ? (
+				<p>Chargement des comptes...</p>
+			) : (
+				comptes.map((compte) => (
+					<div key={compte._id}>
+						<h3>
+							{compte.accountName} (Propriétaire: {compte.userId.name})
+						</h3>
+						<p>Solde: {compte.balance}€</p>
+
+						{/* Display transactions if they exist */}
+					</div>
+				))
+			)}
 		</div>
 	);
 };

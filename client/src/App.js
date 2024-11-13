@@ -21,7 +21,7 @@ const App = () => {
 				<Route path="/signup" element={<Signup />} />
 				{/* Nouvelle route pour les comptes bancaires */}
 				<Route
-					path="/comptes-bancaires"
+					path="/accounts"
 					element={token ? <ComptesBancaires /> : <Login setToken={setToken} />}
 				/>
 			</Routes>
