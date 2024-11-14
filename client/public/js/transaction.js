@@ -1,11 +1,24 @@
 document.addEventListener('DOMContentLoaded', function () {
   console.log('nouvelle transaction')
 
-  // Gestion de l'événement de soumission
+  // Récupérer l'ID du compte depuis l'URL
+  const urlParams = new URLSearchParams(window.location.search)
+  const compteId = urlParams.get('compteId') // récupère l'ID du compte
+
+  // Vérifier si compteId est présent
+  if (!compteId) {
+    console.error("ID du compte non trouvé dans l'URL")
+    alert("ID du compte non trouvé dans l'URL")
+    return
+  }
+
+  // Gestion de l'événement de soumission du formulaire de transaction
   document
     .querySelector('#transactionSubmit')
     .addEventListener('click', function (e) {
       e.preventDefault()
+
+      // Récupérer le type de transaction (Dépôt ou Retrait)
       const typeTransaction =
         document.querySelector("input[name='options']:checked").value ===
         'option-1'
@@ -16,17 +29,24 @@ document.addEventListener('DOMContentLoaded', function () {
       )
       const token = localStorage.getItem('token')
 
-      if (!typeTransaction || !montant) {
+      // Validation de l'entrée
+      if (!typeTransaction || isNaN(montant)) {
         alert('Veuillez remplir tous les champs.')
         return
       }
 
-      // Récupérer les comptes avant de faire la transaction
-      fetch('http://localhost:5500/api/accounts', {
-        method: 'GET',
+      // Effectuer la requête pour ajouter la transaction
+      fetch('http://localhost:5500/api/transactions', {
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          compteId, // Utilise l'ID du compte extrait de l'URL
+          type: typeTransaction,
+          montant,
+        }),
       })
         .then((response) => {
           if (!response.ok) {
@@ -36,45 +56,12 @@ document.addEventListener('DOMContentLoaded', function () {
           }
           return response.json()
         })
-        .then((data) => {
-          console.log(`data: ${data}`)
-          // Vérifie si des comptes existent
-          if (data && data.length > 0) {
-            const compteId = data[0]._id // Utilise le premier compte de la liste, ou change cette logique selon tes besoins
-            console.log('Compte ID:', compteId)
-
-            // Effectuer la transaction seulement après avoir récupéré le compteId
-            fetch('http://localhost:5500/api/transactions', {
-              method: 'POST',
-              headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                compteId, // On utilise le compteId récupéré ici
-                type: typeTransaction,
-                montant,
-              }),
-            })
-              .then((response) => response.json())
-              .then(() => {
-                alert('Transaction ajoutée avec succès!')
-              })
-              .catch((error) => {
-                console.error(
-                  "Erreur lors de l'ajout de la transaction:",
-                  error,
-                )
-                alert("Erreur lors de l'ajout de la transaction.")
-              })
-          } else {
-            console.error('Aucun compte trouvé pour cet utilisateur')
-            alert('Aucun compte trouvé.')
-          }
+        .then(() => {
+          alert('Transaction ajoutée avec succès!')
         })
         .catch((error) => {
-          console.error('Erreur lors de la récupération des comptes:', error)
-          alert('Erreur lors de la récupération des comptes.')
+          console.error("Erreur lors de l'ajout de la transaction:", error)
+          alert("Erreur lors de l'ajout de la transaction.")
         })
     })
 })

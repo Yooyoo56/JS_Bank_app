@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Récupérer l'ID du compte depuis l'URL
   const urlParams = new URLSearchParams(window.location.search)
   const compteId = urlParams.get('compteId') // récupère l'ID du compte
-
+  console.log('compteId ', compteId)
   if (!compteId) {
     console.error("ID du compte non trouvé dans l'URL")
     return
@@ -36,15 +36,18 @@ document.addEventListener('DOMContentLoaded', function () {
       // Ajouter un log pour afficher la réponse du serveur
       const transactions = await response.json()
       console.log('Réponse du serveur:', transactions)
-      const transactionsList = transactions.transactions // Utilise un tableau vide si la clé 'transactions' n'existe pas
+      // Définir transactionsList selon la structure de la réponse
+      const transactionsList = Array.isArray(transactions)
+        ? transactions // Si transactions est un tableau, on l'utilise directement
+        : transactions.transactions || [] // Sinon, on accède à la clé `transactions`, ou un tableau vide
 
-      // Vérifiez si la réponse est bien un tableau avant d'essayer d'utiliser forEach
+      // Vérifiez si transactionsList est bien un tableau avant d'utiliser forEach
       if (!Array.isArray(transactionsList)) {
         console.error('Les transactions ne sont pas un tableau')
         return
       }
+      console.log('transactionsList pour le compte:', transactionsList)
 
-      console.log('Transactions pour le compte:', transactions)
       // Vider le conteneur et afficher les transactions récupérées
       transactionsContainer.innerHTML = ''
 
@@ -72,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
             <div class="flex justify-between">
               <p class="px-3">Solde :</p>
-              <p class="px-3">${transaction.solde} €</p>
+              <p class="px-3">${transaction.soldeAprèsTransaction} €</p>
             </div>
           `
           transactionsContainer.appendChild(card)

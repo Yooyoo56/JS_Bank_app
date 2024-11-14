@@ -93,12 +93,30 @@
       </div>
 
       <div class="absolute bottom-12 right-12">
-        <a class="p-3 bg-sky-600 text-white rounded" href="/newTransaction.html"
+        <a
+          id="addTransactionLink"
+          class="p-3 bg-sky-600 text-white rounded"
+          href=""
           >Ajouter une transaction</a
         >
       </div>
     </div>
 
     <script src="/js/compteDetail.js"></script>
+    <!-- Script pour ajouter le compteId en paramètre à l'URL -->
+    <script>
+      // Récupérer l'ID du compte depuis l'URL
+      const urlParams = new URLSearchParams(window.location.search)
+      const compteId = urlParams.get('compteId')
+
+      // Vérifier que compteId est présent
+      if (compteId) {
+        // Sélectionner le lien et ajouter le compteId en paramètre dans l'URL
+        const addTransactionLink = document.getElementById('addTransactionLink')
+        addTransactionLink.href = `/newTransaction.html?compteId=${compteId}`
+      } else {
+        console.error("ID du compte non trouvé dans l'URL")
+      }
+    </script>
   </body>
 </html>

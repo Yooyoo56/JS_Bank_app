@@ -11,23 +11,25 @@ const registerUser = async (req, res) => {
 
 	// mandatory verification
 	if (!name) {
-		return res.status(400).send("Name is required");
+			return res.status(400).json({ message: "Name is required" });
 	}
 
 	// 이메일 유효성 검사
 	if (!validator.isEmail(email)) {
-		return res.status(400).send("Invalid email address!");
+			return res.status(400).json({ message: "Invalid email address!" });
 	}
 
 	// 비밀번호 길이 검사 (8자 이상)
 	if (password.length < 8) {
-		return res.status(400).send("Password should be more than 8");
+			return res
+					.status(400)
+					.json({ message: "Password should be more than 8 characters" });
 	}
 
 	// 이메일 중복 확인
 	const existingUser = await User.findOne({ email });
 	if (existingUser) {
-		return res.status(400).send("Already using email");
+			return res.status(400).json({ message: "Already using email" }); // Return JSON error
 	}
 
 	// 비밀번호 해싱
@@ -35,17 +37,17 @@ const registerUser = async (req, res) => {
 
 	// 새로운 사용자 생성
 	const newUser = new User({
-		name,
-		email,
-		password: hashedPassword,
+			name,
+			email,
+			password: hashedPassword,
 	});
 
 	try {
-		await newUser.save(); // Add user info in MongoDB
-		res.status(201).json({ message: "🎉 Successfully created account !🎉 " });
+			await newUser.save(); // Add user info in MongoDB
+			res.status(201).json({ message: "🎉 Successfully created account! 🎉" });
 	} catch (error) {
-		console.error("Error during creating the account:", error.message);
-		res.status(500).send("server error");
+			console.error("Error during creating the account:", error.message);
+			res.status(500).json({ message: "Server error" }); // Return JSON error
 	}
 };
 

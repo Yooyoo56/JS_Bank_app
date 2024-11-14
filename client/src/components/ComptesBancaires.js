@@ -49,50 +49,6 @@ const ComptesBancaires = () => {
     fetchComptes()
   }, [])
 
-  // // Fonction pour appliquer une transaction sur un compte
-  // const appliquerTransaction = (compteId, typeTransaction, montant) => {
-  //   setComptes((prevComptes) => {
-  //     const comptesMisesAJour = prevComptes.map((compte) => {
-  //       if (compte._id === compteId) {
-  //         let nouveauSolde = compte.solde
-  //         if (typeTransaction === 'Dépôt') {
-  //           nouveauSolde += montant // Ajouter le montant pour un dépôt
-  //         } else if (typeTransaction === 'Retrait') {
-  //           nouveauSolde -= montant // Soustraire le montant pour un retrait
-  //         }
-  //         return { ...compte, solde: nouveauSolde }
-  //       }
-  //       return compte
-  //     })
-  //     // Calculer le totalSolde après la mise à jour du solde
-  //     setTotalSolde(calculerTotalSolde(comptesMisesAJour))
-  //     return comptesMisesAJour
-  //   })
-  // }
-
-  // // Fonction pour récupérer les transactions d'un compte
-  // const fetchTransactionsForCompte = async (compteId) => {
-  //   try {
-  //     const token = localStorage.getItem('token')
-  //     const config = {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     }
-  //     const response = await axios.get(
-  //       `http://localhost:5500/api/transactions/${compteId}`,
-  //       config,
-  //     )
-
-  //     // Appliquer les transactions sur les comptes (mettre à jour les soldes)
-  //     response.data.forEach((transaction) => {
-  //       appliquerTransaction(compteId, transaction.type, transaction.montant)
-  //     })
-  //   } catch (error) {
-  //     console.error('Erreur lors de la récupération des transactions:', error)
-  //   }
-  // }
-
   if (loading) return <p>Chargement...</p>
 
   if (error) return <p>{error}</p>
@@ -123,7 +79,7 @@ const ComptesBancaires = () => {
 
             <a
               href={`compteDetail.html?compteId=${compte._id}`}
-              className="underline"
+              className="underline text-black"
             >
               Voir plus
             </a>

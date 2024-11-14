@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import $ from 'jquery' // Import jQuery
-
+import $ from 'jquery'
 const Signup = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -12,26 +11,21 @@ const Signup = () => {
 
     console.log('Sending data:', { name, email, password })
 
-    // jQuery AJAX request
     $.ajax({
       url: 'http://localhost:5500/api/signup',
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify({ name, email, password }),
-      success: (data) => {
-        // Handle success
-        localStorage.setItem('userName', name) // Store the username in localStorage
-        alert('Signup successful 😘!') // Alert the user
-
-        // Redirect to login page after a successful signup
+      success: () => {
+        localStorage.setItem('userName', name)
+        alert('Signup successful 😘!')
         setTimeout(() => {
-          window.location.href = '/login' // Redirect to the login page
-        }, 200) // Delay the redirect by 2 seconds to let the alert close
+          window.location.href = '/login'
+        }, 200)
       },
-      error: (xhr, status, error) => {
-        // Handle error
+      error: (xhr) => {
         const errorMessage = xhr.responseJSON?.message || 'Signup failed'
-        setError(errorMessage)
+        setError(errorMessage) // Display the actual error message
         console.error('Error:', errorMessage)
       },
     })
@@ -39,6 +33,7 @@ const Signup = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <h2>Create Your Account</h2>
       <input
         type="text"
         placeholder="Name"
