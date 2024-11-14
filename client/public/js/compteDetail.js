@@ -62,4 +62,66 @@ document.addEventListener('DOMContentLoaded', function () {
       transactionsContainer.appendChild(card)
     })
   }
+  // Récupérer les éléments du DOM
+  const modal = document.getElementById('modal')
+  const btnOpenModal = document.getElementById('seuil')
+  const btnCloseModal = document.getElementById('close-modal')
+  const btnSaveSeuil = document.getElementById('save-seuil')
+  const seuilInput = document.getElementById('seuil')
+  const displaySeuil = document.getElementById('display-seuil') // Élément où le seuil sera affiché
+
+  // Ouvrir la modal
+  btnOpenModal.onclick = function () {
+    modal.classList.remove('hidden') // Afficher la modal
+  }
+
+  // Fermer la modal
+  btnCloseModal.onclick = function () {
+    modal.classList.add('hidden') // Cacher la modal
+  }
+
+  const updateSeuilDisplay = () => {
+    const savedSeuil = localStorage.getItem('seuil')
+    if (savedSeuil) {
+      displaySeuil.innerText = `${savedSeuil} ` // Mettre à jour le texte avec le seuil
+    } else {
+      displaySeuil.innerText = '0' // Afficher un message si aucun seuil n'est défini
+    }
+  }
+
+  updateSeuilDisplay()
+  let seuil = localStorage.getItem('seuil')
+
+  // Si le seuil n'existe pas, définissez-le à 0 et enregistrez-le dans le localStorage
+  if (seuil === null) {
+    seuil = 0
+    localStorage.setItem('seuil', seuil)
+  }
+
+  // Enregistrer le seuil dans le localStorage
+  btnSaveSeuil.onclick = function () {
+    const seuilValue = seuilInput.value
+
+    if (seuilValue && !isNaN(seuilValue)) {
+      // Sauvegarder la valeur dans le localStorage
+      localStorage.setItem('seuil', seuilValue)
+
+      // Vous pouvez ajouter un message de confirmation ici, si nécessaire
+      alert('Seuil enregistré : ' + seuilValue)
+
+      // Fermer la modal
+      modal.classList.add('hidden')
+
+      updateSeuilDisplay() // Mettre à jour l'affichage du seuil
+    } else {
+      // Si la valeur n'est pas valide, afficher un message d'erreur
+      alert('Veuillez entrer un seuil valide.')
+    }
+  }
+
+  // Si un seuil est déjà défini dans le localStorage, le pré-remplir
+  const savedSeuil = localStorage.getItem('seuil')
+  if (savedSeuil) {
+    seuilInput.value = savedSeuil
+  }
 })

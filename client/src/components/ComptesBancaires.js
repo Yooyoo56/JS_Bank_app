@@ -49,7 +49,7 @@ const ComptesBancaires = () => {
         Mes Comptes Bancaires
       </h2>
 
-      <div className="shadow flex justify-center align-center p-5 mb-12">
+      <div className="shadow flex justify-center items-center p-5 mb-12">
         <h3 className="font-semibold">
           Solde total : {totalSolde.toFixed(2)} €
         </h3>
