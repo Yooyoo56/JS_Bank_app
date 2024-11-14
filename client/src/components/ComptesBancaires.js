@@ -3,9 +3,15 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 const ComptesBancaires = () => {
-  const [comptes, setComptes] = useState([])
+  const [comptes, setComptes] = useState([]) // Liste des comptes
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [totalSolde, setTotalSolde] = useState(0) // Total des soldes
+
+  // Fonction pour calculer le total des soldes
+  const calculerTotalSolde = (comptes) => {
+    return comptes.reduce((acc, compte) => acc + parseFloat(compte.solde), 0)
+  }
 
   useEffect(() => {
     const fetchComptes = async () => {
@@ -26,10 +32,13 @@ const ComptesBancaires = () => {
 
         // Exemple : récupérer le userId du premier compte
         const userId = response.data[0]?.userId
-        console.log(userId)
+        console.log('userId ', userId)
 
         localStorage.setItem('userId', userId)
         setComptes(response.data)
+
+        // Calculer le totalSolde après la récupération des comptes
+        setTotalSolde(calculerTotalSolde(response.data))
       } catch (error) {
         setError('Erreur lors de la récupération des comptes')
         console.error('Erreur:', error.message)
@@ -40,15 +49,53 @@ const ComptesBancaires = () => {
     fetchComptes()
   }, [])
 
+  // // Fonction pour appliquer une transaction sur un compte
+  // const appliquerTransaction = (compteId, typeTransaction, montant) => {
+  //   setComptes((prevComptes) => {
+  //     const comptesMisesAJour = prevComptes.map((compte) => {
+  //       if (compte._id === compteId) {
+  //         let nouveauSolde = compte.solde
+  //         if (typeTransaction === 'Dépôt') {
+  //           nouveauSolde += montant // Ajouter le montant pour un dépôt
+  //         } else if (typeTransaction === 'Retrait') {
+  //           nouveauSolde -= montant // Soustraire le montant pour un retrait
+  //         }
+  //         return { ...compte, solde: nouveauSolde }
+  //       }
+  //       return compte
+  //     })
+  //     // Calculer le totalSolde après la mise à jour du solde
+  //     setTotalSolde(calculerTotalSolde(comptesMisesAJour))
+  //     return comptesMisesAJour
+  //   })
+  // }
+
+  // // Fonction pour récupérer les transactions d'un compte
+  // const fetchTransactionsForCompte = async (compteId) => {
+  //   try {
+  //     const token = localStorage.getItem('token')
+  //     const config = {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     }
+  //     const response = await axios.get(
+  //       `http://localhost:5500/api/transactions/${compteId}`,
+  //       config,
+  //     )
+
+  //     // Appliquer les transactions sur les comptes (mettre à jour les soldes)
+  //     response.data.forEach((transaction) => {
+  //       appliquerTransaction(compteId, transaction.type, transaction.montant)
+  //     })
+  //   } catch (error) {
+  //     console.error('Erreur lors de la récupération des transactions:', error)
+  //   }
+  // }
+
   if (loading) return <p>Chargement...</p>
 
   if (error) return <p>{error}</p>
-
-  // Calcul de la somme des soldes des comptes
-  const totalSolde = comptes.reduce(
-    (acc, compte) => acc + parseFloat(compte.solde),
-    0,
-  )
 
   return (
     <div className="w-11/12 mx-auto flex flex-col justify-center">
@@ -73,10 +120,11 @@ const ComptesBancaires = () => {
               <p>Solde :</p>
               <p>{compte.solde} €</p>
             </div>
-            {/* <strong className="font-medium">Nom du compte :</strong>{' '}
-            {compte.nomCompte} <strong className="font-medium">Solde :</strong>{' '}
-            {compte.solde} € */}
-            <a className="underline" href="/compteDetail.html">
+
+            <a
+              href={`compteDetail.html?compteId=${compte._id}`}
+              className="underline"
+            >
               Voir plus
             </a>
           </li>

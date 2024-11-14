@@ -58,23 +58,23 @@ const loginUser = async (req, res) => {
 		if (!user) {
 			return res
 				.status(400)
-				.json({ message: "이메일 또는 비밀번호가 잘못되었습니다." });
+				.json({ message: "Invalid mail." });
 		}
 
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) {
 			return res
 				.status(400)
-				.json({ message: "이메일 또는 비밀번호가 잘못되었습니다." });
+				.json({ message: "Invalid password." });
 		}
 
 		const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
 			expiresIn: "1h",
 		});
-		res.status(200).json({ token, message: "로그인 성공" });
+		res.status(200).json({ token, message: "Login success" });
 	} catch (error) {
-		console.error("로그인 오류:", error);
-		res.status(500).json({ message: "서버 오류" });
+		console.error("Login error:", error);
+		res.status(500).json({ message: "Server error" });
 	}
 };
 
@@ -83,8 +83,55 @@ const logoutUser = (req, res) => {
 	res.status(200).json({ message: "🎉 Successfully logout!" });
 };
 
+// Update User Profile
+const updateUserProfile = async (req, res) => {
+	const { name, email } = req.body;
+
+	// Get the user from the JWT token (assumed to be passed in the headers)
+	const userId = req.userId; // assuming req.userId is set by an authentication middleware
+
+	try {
+		// Check if the user exists
+		const user = await User.findById(userId);
+		if (!user) {
+			return res.status(400).json({ message: "User not found" });
+		}
+
+		// Update name and email
+		if (name) user.name = name;
+		if (email) user.email = email;
+
+		// Save updated user to the database
+		await user.save();
+
+		res.status(200).json({ message: "Profile updated successfully", user });
+	} catch (error) {
+		console.error("Error during updating the profile:", error.message);
+		res.status(500).send("Server error");
+	}
+};
+
+// Get User Profile
+const getUserProfile = async (req, res) => {
+	const userId = req.userId; // assuming req.userId is set by an authentication middleware
+
+	try {
+		const user = await User.findById(userId).select("-password"); // exclude password from response
+		if (!user) {
+			return res.status(400).json({ message: "User not found" });
+		}
+
+		res.status(200).json(user);
+	} catch (error) {
+		console.error("Error during fetching the profile:", error.message);
+		res.status(500).send("Server error");
+	}
+};
+
 module.exports = {
 	registerUser,
 	loginUser,
 	logoutUser,
+	getUserProfile,
+	updateUserProfile,
 };

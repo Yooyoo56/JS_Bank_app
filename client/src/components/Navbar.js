@@ -19,6 +19,9 @@ const Navbar = ({ token, setToken }) => {
               <Link to="/comptes-bancaires">Comptes Bancaires</Link>
             </li>
             <li className="mx-2">
+              <Link to="/profile">Profile</Link>
+            </li>
+            <li className="mx-2">
               <button onClick={handleLogout}>Logout</button>
             </li>
           </>
