@@ -22,6 +22,13 @@ const ComptesBancaires = () => {
           'http://localhost:5500/api/accounts/',
           config,
         )
+        console.log(response.data)
+
+        // Exemple : récupérer le userId du premier compte
+        const userId = response.data[0]?.userId
+        console.log(userId)
+
+        localStorage.setItem('userId', userId)
         setComptes(response.data)
       } catch (error) {
         setError('Erreur lors de la récupération des comptes')

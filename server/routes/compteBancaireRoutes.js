@@ -1,26 +1,9 @@
-// const express = require("express");
-// const {
-// 	getComptesBancaires,
-// 	getTransactions,
-// } = require("../controllers/compteBancaireController");
-// const authMiddleware = require("../middleware/authMiddleware"); // Middleware pour vérifier si l'utilisateur est authentifié
-
-// const router = express.Router();
-
-// // Récupérer les comptes bancaires de l'utilisateur connecté
-// router.get("/comptes", authMiddleware, getComptesBancaires);
-
-// // Récupérer les transactions d'un compte bancaire spécifique
-// router.get("/comptes/:compteId/transactions", authMiddleware, getTransactions);
-
-// module.exports = router;
-
 // routes/accountRoutes.js
 const express = require("express");
 const router = express.Router();
 const Account = require("../models/CompteBancaire");
 const authMiddleware = require("../middleware/authMiddleware"); // Middleware pour protéger la route
-const { createAccount } = require('../controllers/compteBancaireController'); // Import du controller
+// const { createAccount } = require('../controllers/compteBancaireController'); // Import du controller
 
 // Route pour récupérer tous les comptes bancaires de l'utilisateur connecté
 router.get("/", authMiddleware, async (req, res) => {

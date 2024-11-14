@@ -6,7 +6,8 @@ const cors = require("cors");
 
 // routers
 const authRoutes = require("./routes/authRoutes");
-const accountRoutes = require("./routes/compteBancaireRoutes"); //
+const accountRoutes = require("./routes/compteBancaireRoutes"); 
+const transactionRoutes = require("./routes/transactionRoutes");
 
 const app = express();
 
@@ -14,8 +15,8 @@ const app = express();
 // middleware
 app.use(
 	cors({
-		origin: "http://localhost:3000", // 프론트엔드 React 앱의 주소
-		methods: ["GET", "POST"],
+		origin: "http://localhost:3000", 
+		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true,
 	})
 );
@@ -26,11 +27,12 @@ mongoose
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
-	.then(() => console.log("MongoDB 연결 성공"))
-	.catch((err) => console.log("MongoDB 연결 실패:", err));
+	.then(() => console.log("MongoDB connected 😍"))
+	.catch((err) => console.log("MongoDB connection failed: ", err));
 
 app.use("/api", authRoutes);
 app.use("/api/accounts", accountRoutes);
+app.use("/api/transactions", transactionRoutes);
 
 const PORT = process.env.PORT || 5500;
-app.listen(PORT, () => console.log(`서버가 ${PORT}번 포트에서 실행 중입니다.`));
+app.listen(PORT, () => console.log(`Server is running on port ${PORT} 😉`));

@@ -1,51 +1,80 @@
-console.log('Transactions')
-// Vérifie si un solde est déjà stocké dans localStorage, sinon initialise à 1000
-let solde = parseFloat(localStorage.getItem('solde')) || 1000
-localStorage.setItem('solde', solde) // Enregistre le solde initial dans localStorag
-document
-  .querySelector('#transactionSubmit')
-  .addEventListener('click', function () {
-    // Récupération des valeurs du formulaire
-    const typeTransaction =
-      document.querySelector("input[name='options']:checked").value ===
-      'option-1'
-        ? 'Dépôt'
-        : 'Retrait'
-    const date = document.getElementById('name').value
-    const montant = document.querySelector("input[type='number']").value
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('nouvelle transaction')
 
-    if (!typeTransaction || !date || !montant) {
-      alert('Veuillez remplir tous les champs.')
-      return
-    }
+  // Gestion de l'événement de soumission
+  document
+    .querySelector('#transactionSubmit')
+    .addEventListener('click', function (e) {
+      e.preventDefault()
+      const typeTransaction =
+        document.querySelector("input[name='options']:checked").value ===
+        'option-1'
+          ? 'Dépôt'
+          : 'Retrait'
+      const montant = parseFloat(
+        document.querySelector("input[type='number']").value,
+      )
+      const token = localStorage.getItem('token')
 
-    // Récupération du solde actuel depuis localStorage
-    let solde = parseFloat(localStorage.getItem('solde')) || 1000
+      if (!typeTransaction || !montant) {
+        alert('Veuillez remplir tous les champs.')
+        return
+      }
 
-    // Mise à jour du solde en fonction du type de transaction
-    if (typeTransaction === 'Dépôt') {
-      solde += parseFloat(montant)
-    } else if (typeTransaction === 'Retrait') {
-      solde -= parseFloat(montant)
-    }
+      // Récupérer les comptes avant de faire la transaction
+      fetch('http://localhost:5500/api/accounts', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            return response.json().then((errorData) => {
+              throw new Error(errorData.message || 'Une erreur est survenue')
+            })
+          }
+          return response.json()
+        })
+        .then((data) => {
+          console.log(`data: ${data}`)
+          // Vérifie si des comptes existent
+          if (data && data.length > 0) {
+            const compteId = data[0]._id // Utilise le premier compte de la liste, ou change cette logique selon tes besoins
+            console.log('Compte ID:', compteId)
 
-    // Création d'un objet pour la transaction
-    const transaction = {
-      type: typeTransaction,
-      date: date,
-      montant: montant,
-      solde: solde, // Utilise le solde mis à jour
-    }
-
-    // Récupération des transactions existantes depuis localStorage
-    let transactions = JSON.parse(localStorage.getItem('transactions')) || []
-
-    // Ajout de la nouvelle transaction
-    transactions.push(transaction)
-
-    // Mise à jour de localStorage avec le nouveau tableau de transactions
-    localStorage.setItem('transactions', JSON.stringify(transactions))
-
-    // Message de confirmation
-    alert('Transaction enregistrée avec succès !')
-  })
+            // Effectuer la transaction seulement après avoir récupéré le compteId
+            fetch('http://localhost:5500/api/transactions', {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                compteId, // On utilise le compteId récupéré ici
+                type: typeTransaction,
+                montant,
+              }),
+            })
+              .then((response) => response.json())
+              .then(() => {
+                alert('Transaction ajoutée avec succès!')
+              })
+              .catch((error) => {
+                console.error(
+                  "Erreur lors de l'ajout de la transaction:",
+                  error,
+                )
+                alert("Erreur lors de l'ajout de la transaction.")
+              })
+          } else {
+            console.error('Aucun compte trouvé pour cet utilisateur')
+            alert('Aucun compte trouvé.')
+          }
+        })
+        .catch((error) => {
+          console.error('Erreur lors de la récupération des comptes:', error)
+          alert('Erreur lors de la récupération des comptes.')
+        })
+    })
+})
