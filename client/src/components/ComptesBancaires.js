@@ -131,7 +131,7 @@ const ComptesBancaires = () => {
         ))}
       </ul>
 
-      <div className="absolute bottom-12 right-12">
+      <div className="fixed bottom-12 right-12">
         <Link className="p-3 bg-sky-600 text-white rounded" to="/add-account">
           Créer un compte
         </Link>

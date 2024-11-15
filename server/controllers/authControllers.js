@@ -11,29 +11,31 @@ const registerUser = async (req, res) => {
 
 	// mandatory verification
 	if (!name) {
-		return res.status(400).send("Name is required");
+		return res.status(400).json({ message: "Name is required" });
 	}
 
-	// 이메일 유효성 검사
+	// Email validation
 	if (!validator.isEmail(email)) {
-		return res.status(400).send("Invalid email address!");
+		return res.status(400).json({ message: "Invalid email address!" });
 	}
 
-	// 비밀번호 길이 검사 (8자 이상)
+	// password length should be more than 8
 	if (password.length < 8) {
-		return res.status(400).send("Password should be more than 8");
+		return res
+			.status(400)
+			.json({ message: "Password should be more than 8 characters" });
 	}
 
-	// 이메일 중복 확인
+	// Same email verification
 	const existingUser = await User.findOne({ email });
 	if (existingUser) {
-		return res.status(400).send("Already using email");
+		return res.status(400).json({ message: "Already using email" }); // Return JSON error
 	}
 
-	// 비밀번호 해싱
+	// Hashed password
 	const hashedPassword = await bcrypt.hash(password, 10);
 
-	// 새로운 사용자 생성
+	// New user
 	const newUser = new User({
 		name,
 		email,
@@ -42,10 +44,10 @@ const registerUser = async (req, res) => {
 
 	try {
 		await newUser.save(); // Add user info in MongoDB
-		res.status(201).json({ message: "🎉 Successfully created account !🎉 " });
+		res.status(201).json({ message: "🎉 Successfully created account! 🎉" });
 	} catch (error) {
 		console.error("Error during creating the account:", error.message);
-		res.status(500).send("server error");
+		res.status(500).json({ message: "Server error" }); // Return JSON error
 	}
 };
 
@@ -56,16 +58,12 @@ const loginUser = async (req, res) => {
 	try {
 		const user = await User.findOne({ email });
 		if (!user) {
-			return res
-				.status(400)
-				.json({ message: "Invalid mail." });
+			return res.status(400).json({ message: "Invalid mail." });
 		}
 
 		const isMatch = await bcrypt.compare(password, user.password);
 		if (!isMatch) {
-			return res
-				.status(400)
-				.json({ message: "Invalid password." });
+			return res.status(400).json({ message: "Invalid password." });
 		}
 
 		const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
@@ -86,45 +84,48 @@ const logoutUser = (req, res) => {
 // Update User Profile
 const updateUserProfile = async (req, res) => {
 	const { name, email } = req.body;
-
-	// Get the user from the JWT token (assumed to be passed in the headers)
-	const userId = req.userId; // assuming req.userId is set by an authentication middleware
+	const userId = req.userId; // Set by authMiddleware
 
 	try {
-		// Check if the user exists
 		const user = await User.findById(userId);
 		if (!user) {
-			return res.status(400).json({ message: "User not found" });
+			return res.status(404).json({ message: "User not found" });
 		}
 
-		// Update name and email
-		if (name) user.name = name;
-		if (email) user.email = email;
+		// Update user information
+		user.name = name || user.name;
+		user.email = email || user.email;
 
 		// Save updated user to the database
-		await user.save();
+		const updatedUser = await user.save();
 
-		res.status(200).json({ message: "Profile updated successfully", user });
+		res.status(200).json({
+			message: "Profile updated successfully",
+			user: {
+				id: updatedUser._id,
+				name: updatedUser.name,
+				email: updatedUser.email,
+			},
+		});
 	} catch (error) {
-		console.error("Error during updating the profile:", error.message);
-		res.status(500).send("Server error");
+		console.error("Error updating profile:", error.message);
+		res.status(500).json({ message: "Server error" });
 	}
 };
 
 // Get User Profile
 const getUserProfile = async (req, res) => {
-	const userId = req.userId; // assuming req.userId is set by an authentication middleware
+	const userId = req.userId;
 
 	try {
-		const user = await User.findById(userId).select("-password"); // exclude password from response
+		const user = await User.findById(userId).select("-password");
 		if (!user) {
-			return res.status(400).json({ message: "User not found" });
+			return res.status(404).json({ message: "User not found" });
 		}
-
 		res.status(200).json(user);
 	} catch (error) {
-		console.error("Error during fetching the profile:", error.message);
-		res.status(500).send("Server error");
+		console.error("Error fetching profile:", error.message);
+		res.status(500).json({ message: "Server error" });
 	}
 };
 

@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
-import $ from 'jquery' // Import jQuery
+import { Link } from 'react-router-dom'
+
+import $ from 'jquery'
+import './signupLogin.css'
 
 const Signup = () => {
   const [name, setName] = useState('')
@@ -12,57 +15,78 @@ const Signup = () => {
 
     console.log('Sending data:', { name, email, password })
 
-    // jQuery AJAX request
     $.ajax({
       url: 'http://localhost:5500/api/signup',
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify({ name, email, password }),
-      success: (data) => {
-        // Handle success
-        localStorage.setItem('userName', name) // Store the username in localStorage
-        alert('Signup successful 😘!') // Alert the user
-
-        // Redirect to login page after a successful signup
+      success: () => {
+        localStorage.setItem('userName', name)
+        alert('Signup successful 😘!')
         setTimeout(() => {
-          window.location.href = '/login' // Redirect to the login page
-        }, 200) // Delay the redirect by 2 seconds to let the alert close
+          window.location.href = '/login'
+        }, 200)
       },
-      error: (xhr, status, error) => {
-        // Handle error
+      error: (xhr) => {
         const errorMessage = xhr.responseJSON?.message || 'Signup failed'
-        setError(errorMessage)
+        setError(errorMessage) // Display the actual error message
         console.error('Error:', errorMessage)
       },
     })
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Sign Up</button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </form>
+    <div className="auth-page">
+      <div className="container">
+        <div className="brand-title">Sign up</div>
+
+        {/* Signup Form */}
+        <form onSubmit={handleSubmit}>
+          <div className="inputs">
+            <label>Name</label>
+            <input
+              type="text"
+              placeholder="John Doe"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="example@test.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="Min 8 characters long"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <button type="submit">Sign Up</button>
+          </div>
+
+          {/* Error Message */}
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          {/* Link to Login Page */}
+          <br></br>
+          <p className="login-link">
+            Already have an account?{' '}
+            <Link to="/login" className="linkTitle">
+              {' '}
+              Login
+            </Link>
+          </p>
+        </form>
+      </div>
+    </div>
   )
 }
 
