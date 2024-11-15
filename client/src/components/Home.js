@@ -109,6 +109,9 @@ const Home = () => {
           </div>
         </section>
       </div>
+      <footer className="footer">
+        <p>copyright© 2024 Aissetou Yoojeong Yahia</p>
+      </footer>
     </div>
   )
 }

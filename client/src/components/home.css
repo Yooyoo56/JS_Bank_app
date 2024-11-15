@@ -5,7 +5,7 @@
 /* Section 1 */
 .first-section {
     height: 600px;
-    background-color:#cbced166;
+    background-color:#96cdef6a;
     display: flex;          /* Added flexbox to center content */
     justify-content: center; /* Center content horizontally */
     align-items: center;     /* Center content vertically */
@@ -164,4 +164,15 @@ margin: .67em 0;
   color: white;
   Padding:10px 100px; 
   text-decoration: none;  
+}
+
+/****** footer ***********/
+.footer {
+  left: 0;
+  bottom: 0;
+  padding: 20px;
+  width: 100%;
+  background-color: #96cdef6a;
+  color: #1da0f2b1;
+  text-align: center;
 }
