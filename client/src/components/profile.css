@@ -44,9 +44,18 @@
   }
 
   /* Message after submitting the form */
+  .success-message {
+    color: green;
+    font-weight: bold;
+  }
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
   .profile-container p {
     text-align: center;
-    color: #d9534f; /* Red color for errors */
     font-size: 1rem;
     margin-bottom: 15px;
   }
