@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken"); // jwt 모듈 임포트 추가
+const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const validator = require("validator");
 
@@ -14,28 +14,27 @@ const registerUser = async (req, res) => {
 			return res.status(400).json({ message: "Name is required" });
 	}
 
-	// 이메일 유효성 검사
+	// Email verification
 	if (!validator.isEmail(email)) {
 			return res.status(400).json({ message: "Invalid email address!" });
 	}
 
-	// 비밀번호 길이 검사 (8자 이상)
+	// Password (length should be more than 8)
 	if (password.length < 8) {
 			return res
 					.status(400)
 					.json({ message: "Password should be more than 8 characters" });
 	}
 
-	// 이메일 중복 확인
+	// Using Email verificqtion
 	const existingUser = await User.findOne({ email });
 	if (existingUser) {
 			return res.status(400).json({ message: "Already using email" }); // Return JSON error
 	}
 
-	// 비밀번호 해싱
+	// hashed password
 	const hashedPassword = await bcrypt.hash(password, 10);
 
-	// 새로운 사용자 생성
 	const newUser = new User({
 			name,
 			email,

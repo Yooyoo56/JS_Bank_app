@@ -6,6 +6,7 @@ const Profile = ({ token }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
+  const [isError, setIsError] = useState(false) // New state for error handling
 
   // Fetch user profile on component mount
   useEffect(() => {
@@ -18,9 +19,12 @@ const Profile = ({ token }) => {
         })
         setName(response.data.name)
         setEmail(response.data.email)
+        console.log('Profile fetched successfully')
+        setIsError(false)
       } catch (error) {
         console.error('Error fetching profile:', error)
         setMessage(error.response?.data?.message || 'Failed to fetch profile')
+        setIsError(true)
       }
     }
     if (token) fetchProfile()
@@ -31,8 +35,7 @@ const Profile = ({ token }) => {
     e.preventDefault()
 
     try {
-      // Assuming userId is included in the token
-      const response = await axios.post(
+      const response = await axios.put(
         `http://localhost:5500/api/profile/update`,
         { name, email },
         {
@@ -43,8 +46,10 @@ const Profile = ({ token }) => {
       )
 
       setMessage(response.data.message || 'Profile updated successfully')
+      setIsError(false)
     } catch (error) {
       setMessage(error.response?.data?.message || 'Failed to update profile')
+      setIsError(true)
     }
   }
 
@@ -52,8 +57,11 @@ const Profile = ({ token }) => {
     <div className="profile-page">
       <div className="profile-container">
         <h2 id="profileName">Update Profile</h2>
-        {/* <h4>Welcome, {name}!</h4> */}
-        {message && <p>{message}</p>}
+        {message && (
+          <p className={isError ? 'error-message' : 'success-message'}>
+            {message}
+          </p>
+        )}
         <div className="profile-form">
           <form onSubmit={handleSubmit}>
             <div className="form-group">
