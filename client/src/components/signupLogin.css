@@ -8,7 +8,6 @@
 
 .auth-page {
   margin: 0;
-  width: 100vw;
   height: 100vh;
   background: #ecf0f3;
   display: flex;
@@ -23,7 +22,6 @@
 .auth-page .container {
   position: relative;
   width: 350px;
-  height: 500px;
   border-radius: 20px;
   padding: 40px;
   box-sizing: border-box;
@@ -73,11 +71,23 @@
   box-shadow: inset 6px 6px 6px #cbced1, inset -6px -6px 6px white;
 }
 
+.auth-page .inputs label {
+  display: block;
+  margin-bottom: 8px; /* Adds space between the label and the input */
+}
+
+.auth-page .inputs input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px; /* Adds space after the input field */
+}
+
+
 .auth-page button {
   margin-top: 20px;
   background: #1DA1F2;
   height: 40px;
-  border-radius: 20px;
+  border-radius: 50px;
   cursor: pointer;
   font-weight: 900;
   box-shadow: 6px 6px 6px #cbced1, -6px -6px 6px white;
