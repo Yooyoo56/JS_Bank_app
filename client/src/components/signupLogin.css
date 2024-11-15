@@ -1,0 +1,115 @@
+/* Scoped styles under .auth-page class */
+
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+body {
+  font-family: 'Poppins';
+}
+
+.auth-page {
+  margin: 0;
+  padding: 60px;
+  background: #ecf0f3;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  place-items: center;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+}
+
+.auth-page .container {
+  position: relative;
+  width: 350px;
+  border-radius: 20px;
+  padding: 40px;
+  box-sizing: border-box;
+  margin-bottom: 10rem;
+  background: #ecf0f3;
+  box-shadow:
+    14px 14px 20px #cbced1,
+    -14px -14px 20px white;
+}
+
+.auth-page .brand-logo {
+  height: 100px;
+  width: 100px;
+  margin: auto;
+  border-radius: 50%;
+  box-shadow:
+    7px 7px 10px #cbced1,
+    -7px -7px 10px white;
+}
+
+.auth-page .brand-title {
+  margin-top: 10px;
+  font-weight: 900;
+  font-size: 1.8rem;
+  color: #1da1f2;
+  letter-spacing: 1px;
+}
+
+.auth-page .inputs {
+  text-align: left;
+  margin-top: 30px;
+}
+
+.auth-page label,
+.auth-page input,
+.auth-page button {
+  display: block;
+  width: 100%;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.auth-page input {
+  background: #ecf0f3;
+  padding: 10px;
+  padding-left: 20px;
+  height: 50px;
+  font-size: 14px;
+  border-radius: 50px;
+  box-shadow:
+    inset 6px 6px 6px #cbced1,
+    inset -6px -6px 6px white;
+}
+
+.auth-page .inputs label {
+  display: block;
+  margin-bottom: 8px; /* Adds space between the label and the input */
+}
+
+.auth-page .inputs input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px; /* Adds space after the input field */
+}
+
+.auth-page button {
+  margin-top: 20px;
+  background: #1da1f2;
+  height: 40px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 900;
+  box-shadow:
+    6px 6px 6px #cbced1,
+    -6px -6px 6px white;
+  transition: 0.5s;
+}
+
+.auth-page button:hover {
+  box-shadow: none;
+}
+
+.auth-page a {
+  text-decoration: underline; /* Adds underline */
+}
+
+.auth-page .linkTitle {
+  color: #1da1f2;
+  font-weight: bold;
+}

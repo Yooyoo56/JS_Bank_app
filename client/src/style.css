@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/* body {
   margin: 0 auto;
 }
 
@@ -107,4 +107,4 @@ h2 {
   color: #333;
   font-size: 28px;
   margin-bottom: 30px;
-}
+} */

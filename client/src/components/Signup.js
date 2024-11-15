@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+
 import $ from 'jquery'
+import './signupLogin.css'
+
 const Signup = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -32,32 +36,57 @@ const Signup = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Create Your Account</h2>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Sign Up</button>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </form>
+    <div className="auth-page">
+      <div className="container">
+        <div className="brand-title">Sign up</div>
+
+        {/* Signup Form */}
+        <form onSubmit={handleSubmit}>
+          <div className="inputs">
+            <label>Name</label>
+            <input
+              type="text"
+              placeholder="John Doe"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="example@test.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="Min 8 characters long"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <button type="submit">Sign Up</button>
+          </div>
+
+          {/* Error Message */}
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          {/* Link to Login Page */}
+          <br></br>
+          <p className="login-link">
+            Already have an account?{' '}
+            <Link to="/login" className="linkTitle">
+              {' '}
+              Login
+            </Link>
+          </p>
+        </form>
+      </div>
+    </div>
   )
 }
 
