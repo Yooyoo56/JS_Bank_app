@@ -36,7 +36,9 @@ const verifyToken = (req, res, next) => {
 };
 
 // Route to handle profile update
-router.post("/:userId/update", verifyToken, async (req, res) => {
+
+// Route to update user profile
+router.put("/update", verifyToken, async (req, res) => {
 	const { name, email } = req.body;
 	const userId = req.userId; // Get userId from the JWT token
 
@@ -45,7 +47,7 @@ router.post("/:userId/update", verifyToken, async (req, res) => {
 	}
 
 	try {
-		const user = await User.findById(userId); // Find the user by userId
+		const user = await User.findById(userId);
 
 		if (!user) {
 			return res.status(404).json({ message: "User not found." });
