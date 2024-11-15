@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     return
   }
 
-  const displaySeuil = document.getElementById('display-seuil')
+  let seuil = 0 // Variable pour stocker le seuil en mémoire
 
   // Fonction pour récupérer le seuil
   const fetchSeuil = async () => {
@@ -38,20 +38,19 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
       const data = await response.json()
       if (data && data.seuil !== undefined) {
-        displaySeuil.innerText = `Seuil : ${data.seuil} €`
-        return data.seuil
+        seuil = data.seuil // Mettre à jour le seuil en mémoire
+        displaySeuil.innerText = `Seuil : ${seuil} €`
       } else {
+        seuil = 0 // Valeur par défaut en cas d'absence de seuil
         displaySeuil.innerText = 'Seuil : 0 €'
-        return 0
       }
     } catch (error) {
       console.error('Erreur lors de la récupération du seuil:', error)
       alert('Impossible de récupérer le seuil.')
-      return 0
     }
   }
 
-  // Fonction pour récupérer les transactions et solde
+  // Fonction pour récupérer les transactions
   const fetchTransactions = async () => {
     try {
       const response = await fetch(
@@ -71,11 +70,6 @@ document.addEventListener('DOMContentLoaded', async function () {
       const transactionsList = Array.isArray(transactions)
         ? transactions
         : transactions.transactions || []
-
-      const latestTransaction = transactionsList[transactionsList.length - 1]
-      const currentBalance = latestTransaction
-        ? latestTransaction.soldeAprèsTransaction
-        : 0
 
       transactionsContainer.innerHTML = ''
       if (transactionsList.length === 0) {
@@ -114,7 +108,91 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
   }
 
+  // Fonction pour mettre à jour le seuil sur le serveur
+  const updateSeuilOnServer = async (newSeuil) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5500/api/accounts/${compteId}/seuil`,
+        {
+          method: 'PUT', // Utilisation de PUT pour mettre à jour le seuil
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ seuil: newSeuil }), // Envoi de la nouvelle valeur de seuil
+        },
+      )
+
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour du seuil')
+      }
+
+      const data = await response.json()
+      // console.log(data)
+      if (data && data.compte.seuil !== undefined) {
+        seuil = data.compte.seuil // Mise à jour du seuil en mémoire
+        alert('Seuil mis à jour avec succès !')
+        updateSeuilDisplay() // Mettre à jour l'affichage du seuil
+        console.log('seuil success')
+      } else {
+        alert('Échec de la mise à jour du seuil.')
+      }
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du seuil:', error)
+      alert('Impossible de mettre à jour le seuil.')
+    }
+  }
+
+  // Gestion des seuils (modal)
+  const modal = document.getElementById('modal')
+  const btnOpenModal = document.getElementById('seuil-btn')
+  const btnCloseModal = document.getElementById('close-modal')
+  const btnSaveSeuil = document.getElementById('save-seuil')
+  const seuilInput = document.getElementById('seuil-input')
+  const displaySeuil = document.getElementById('display-seuil')
+
+  // Ouvrir la modal
+  btnOpenModal.onclick = function () {
+    modal.classList.remove('hidden') // Afficher la modal
+  }
+
+  // Fermer la modal
+  btnCloseModal.onclick = function () {
+    modal.classList.add('hidden') // Cacher la modal
+  }
+
+  // Mettre à jour l'affichage du seuil
+  const updateSeuilDisplay = () => {
+    displaySeuil.innerText = `Seuil : ${seuil} €` // Mettre à jour l'affichage avec la valeur en mémoire
+  }
+
+  // Enregistrer le seuil dans la mémoire et sur le serveur
+  btnSaveSeuil.onclick = function () {
+    const seuilValue = seuilInput.value
+    // console.log('seuilValue: ', seuilValue)
+
+    if (seuilValue && !isNaN(seuilValue)) {
+      seuil = seuilValue // Sauvegarder la valeur en mémoire
+      // alert('Seuil enregistré : ' + seuil)
+
+      // Appeler la fonction pour mettre à jour le seuil sur le serveur
+      updateSeuilOnServer(seuil)
+      updateSeuilDisplay()
+
+      // Fermer la modal
+      modal.classList.add('hidden')
+    } else {
+      alert('Veuillez entrer un seuil valide.')
+    }
+  }
+
+  // Si un seuil est déjà défini dans la modal, le pré-remplir
+  if (seuil) {
+    seuilInput.value = seuil
+  }
+
   // Initialiser les données
   await fetchTransactions()
   await fetchSeuil()
+  updateSeuilDisplay()
 })

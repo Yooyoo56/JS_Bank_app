@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then((response) => {
           if (!response.ok) {
             return response.json().then((errorData) => {
-              throw new Error(errorData.message || 'Une erreur est survenue')
+              throw new Error(errorData.message)
             })
           }
           return response.json()
@@ -143,12 +143,10 @@ document.addEventListener('DOMContentLoaded', function () {
           if (currentBalance < seuil) {
             alert(`Attention ! Le solde est en dessous du seuil de ${seuil} €`)
           }
-
-          console.log('blal')
         })
         .catch((error) => {
           console.error("Erreur lors de l'ajout de la transaction:", error)
-          alert("Erreur lors de l'ajout de la transaction.")
+          alert(error)
         })
     })
 })
