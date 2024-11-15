@@ -166,8 +166,8 @@ const Profile = ({ token }) => {
   return (
     <div className="profile-page">
       <div className="profile-container">
-        <h2>Update Profile</h2>
-        {name && <h2>Welcome, {name}!</h2>}
+        <h2 id="profileName">Update Profile</h2>
+        <h4>Welcome, {name}!</h4>
         {message && <p>{message}</p>}
         <div className="profile-form">
           <form onSubmit={handleSubmit}>

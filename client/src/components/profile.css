@@ -10,7 +10,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 80vh;
     background-color: #f4f7fb; /* Light background */
   }
   
@@ -32,9 +32,17 @@
     font-size: 1.5rem;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #333;
+    color:#1DA1F2;
   }
-  
+
+  .profile-container h4 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color:#333;
+  }
+
   /* Message after submitting the form */
   .profile-container p {
     text-align: center;
