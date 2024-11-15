@@ -1,5 +1,3 @@
-# RealMernStack
-
 ## Server
 
 Port:5500
