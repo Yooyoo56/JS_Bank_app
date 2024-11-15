@@ -51,4 +51,38 @@ router.post("/add-account", authMiddleware, async (req, res) => {
   }
 });
 
+router.get('/:compteId/seuil', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.userId; // Récupéré depuis le middleware d'authentification
+    const compte = await Account.findOne({ _id: req.params.compteId, userId });
+
+    if (!compte) {
+      return res.status(404).json({ error: 'Compte non trouvé ou non autorisé' });
+    }
+
+    res.json({ seuil: compte.seuil });
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
+
+// Endpoint pour mettre à jour le seuil d'un compte
+router.put('/:compteId/seuil', async (req, res) => {
+  const { seuil } = req.body;
+  try {
+    const compte = await Account.findByIdAndUpdate(
+      req.params.compteId,
+      { seuil },
+      { new: true }
+    );
+    if (!compte) {
+      return res.status(404).json({ error: 'Compte non trouvé' });
+    }
+    res.json({ message: 'Seuil mis à jour', compte });
+  } catch (error) {
+    res.status(500).json({ error: 'Erreur serveur' });
+  }
+});
+
 module.exports = router;

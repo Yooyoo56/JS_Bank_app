@@ -17,18 +17,16 @@
 
       <h1 class="text-center font-bold mb-7 text-4xl">Nom du compte</h1>
 
-      <p class="absolute top-10 right-3 text-2xl">
-        Seuil : <span id="display-seuil">00</span> €
-      </p>
+      <p id="display-seuil" class="absolute top-10 right-3 text-2xl"></p>
       <div id="transactions-container"></div>
 
-      <div class="absolute bottom-12 left-12">
+      <div class="fixed bottom-12 left-12">
         <button id="seuil" class="p-3 bg-sky-600 text-white rounded">
           Définir un seuil
         </button>
       </div>
 
-      <!-- La Modal -->
+      <!-- Modal -->
       <div
         id="modal"
         class="fixed z-10 inset-0 overflow-y-auto hidden"
@@ -64,7 +62,7 @@
                     </p>
                     <input
                       type="number"
-                      id="seuil"
+                      id="seuil-input"
                       class="mt-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                       placeholder="Seuil"
                     />
@@ -92,7 +90,7 @@
         </div>
       </div>
 
-      <div class="absolute bottom-12 right-12">
+      <div class="fixed bottom-12 right-12">
         <a
           id="addTransactionLink"
           class="p-3 bg-sky-600 text-white rounded"
@@ -102,7 +100,7 @@
       </div>
     </div>
 
-    <script src="/js/compteDetail.js"></script>
+    <script type="module" src="/js/compteDetail.js"></script>
     <!-- Script pour ajouter le compteId en paramètre à l'URL -->
     <script>
       // Récupérer l'ID du compte depuis l'URL

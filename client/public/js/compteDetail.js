@@ -1,26 +1,57 @@
-document.addEventListener('DOMContentLoaded', function () {
-  console.log('nouvelle transaction')
-
-  // Récupérer l'ID du compte depuis l'URL
-  const urlParams = new URLSearchParams(window.location.search)
-  const compteId = urlParams.get('compteId') // récupère l'ID du compte
-  console.log('compteId ', compteId)
-  if (!compteId) {
-    console.error("ID du compte non trouvé dans l'URL")
-    return
-  }
+document.addEventListener('DOMContentLoaded', async function () {
+  console.log('compte detail')
 
   const transactionsContainer = document.getElementById(
     'transactions-container',
   )
-  const token = localStorage.getItem('token') // Assurez-vous que le token est dans le localStorage
+  const token = localStorage.getItem('token')
+  const urlParams = new URLSearchParams(window.location.search)
+  const compteId = urlParams.get('compteId')
+
+  if (!compteId) {
+    console.error("Aucun compteId trouvé dans l'URL")
+  }
 
   if (!token) {
     console.error('Token manquant')
+    alert('Vous devez être connecté pour accéder à cette page.')
     return
   }
 
-  // Fonction pour récupérer les transactions depuis le backend
+  const displaySeuil = document.getElementById('display-seuil')
+
+  // Fonction pour récupérer le seuil
+  const fetchSeuil = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5500/api/accounts/${compteId}/seuil`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      )
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération du seuil')
+      }
+      const data = await response.json()
+      if (data && data.seuil !== undefined) {
+        displaySeuil.innerText = `Seuil : ${data.seuil} €`
+        return data.seuil
+      } else {
+        displaySeuil.innerText = 'Seuil : 0 €'
+        return 0
+      }
+    } catch (error) {
+      console.error('Erreur lors de la récupération du seuil:', error)
+      alert('Impossible de récupérer le seuil.')
+      return 0
+    }
+  }
+
+  // Fonction pour récupérer les transactions et solde
   const fetchTransactions = async () => {
     try {
       const response = await fetch(
@@ -33,24 +64,20 @@ document.addEventListener('DOMContentLoaded', function () {
           },
         },
       )
-      // Ajouter un log pour afficher la réponse du serveur
-      const transactions = await response.json()
-      console.log('Réponse du serveur:', transactions)
-      // Définir transactionsList selon la structure de la réponse
-      const transactionsList = Array.isArray(transactions)
-        ? transactions // Si transactions est un tableau, on l'utilise directement
-        : transactions.transactions || [] // Sinon, on accède à la clé `transactions`, ou un tableau vide
-
-      // Vérifiez si transactionsList est bien un tableau avant d'utiliser forEach
-      if (!Array.isArray(transactionsList)) {
-        console.error('Les transactions ne sont pas un tableau')
-        return
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des transactions')
       }
-      console.log('transactionsList pour le compte:', transactionsList)
+      const transactions = await response.json()
+      const transactionsList = Array.isArray(transactions)
+        ? transactions
+        : transactions.transactions || []
 
-      // Vider le conteneur et afficher les transactions récupérées
+      const latestTransaction = transactionsList[transactionsList.length - 1]
+      const currentBalance = latestTransaction
+        ? latestTransaction.soldeAprèsTransaction
+        : 0
+
       transactionsContainer.innerHTML = ''
-
       if (transactionsList.length === 0) {
         const noTransactionMessage = document.createElement('p')
         noTransactionMessage.className = 'text-center text-gray-500 mt-4'
@@ -66,15 +93,15 @@ document.addEventListener('DOMContentLoaded', function () {
               <p class="px-3">${transaction.type}</p>
             </div>
             <div class="flex justify-between">
-              <p class="px-3">Date :</p>
-              <p class="px-3">${transaction.date}</p>
-            </div>
-            <div class="flex justify-between">
               <p class="px-3">Montant :</p>
               <p class="px-3">${transaction.montant} €</p>
             </div>
             <div class="flex justify-between">
-              <p class="px-3">Solde :</p>
+              <p class="px-3">Date :</p>
+              <p class="px-3">${new Date(transaction.date).toLocaleDateString()}</p>
+            </div>
+            <div class="flex justify-between">
+              <p class="px-3">Solde après transaction :</p>
               <p class="px-3">${transaction.soldeAprèsTransaction} €</p>
             </div>
           `
@@ -83,72 +110,11 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     } catch (error) {
       console.error('Erreur lors de la récupération des transactions:', error)
+      alert('Impossible de récupérer les transactions.')
     }
   }
 
-  // Appel initial pour afficher les transactions
-  fetchTransactions()
-
-  // Gestion des seuils (modal)
-  const modal = document.getElementById('modal')
-  const btnOpenModal = document.getElementById('seuil')
-  const btnCloseModal = document.getElementById('close-modal')
-  const btnSaveSeuil = document.getElementById('save-seuil')
-  const seuilInput = document.getElementById('seuil')
-  const displaySeuil = document.getElementById('display-seuil')
-
-  // Ouvrir la modal
-  btnOpenModal.onclick = function () {
-    modal.classList.remove('hidden') // Afficher la modal
-  }
-
-  // Fermer la modal
-  btnCloseModal.onclick = function () {
-    modal.classList.add('hidden') // Cacher la modal
-  }
-
-  const updateSeuilDisplay = () => {
-    const savedSeuil = localStorage.getItem('seuil')
-    if (savedSeuil) {
-      displaySeuil.innerText = `${savedSeuil} ` // Mettre à jour le texte avec le seuil
-    } else {
-      displaySeuil.innerText = '0' // Afficher un message si aucun seuil n'est défini
-    }
-  }
-
-  updateSeuilDisplay()
-  let seuil = localStorage.getItem('seuil')
-
-  // Si le seuil n'existe pas, définissez-le à 0 et enregistrez-le dans le localStorage
-  if (seuil === null) {
-    seuil = 0
-    localStorage.setItem('seuil', seuil)
-  }
-
-  // Enregistrer le seuil dans le localStorage
-  btnSaveSeuil.onclick = function () {
-    const seuilValue = seuilInput.value
-
-    if (seuilValue && !isNaN(seuilValue)) {
-      // Sauvegarder la valeur dans le localStorage
-      localStorage.setItem('seuil', seuilValue)
-
-      // Vous pouvez ajouter un message de confirmation ici, si nécessaire
-      alert('Seuil enregistré : ' + seuilValue)
-
-      // Fermer la modal
-      modal.classList.add('hidden')
-
-      updateSeuilDisplay() // Mettre à jour l'affichage du seuil
-    } else {
-      // Si la valeur n'est pas valide, afficher un message d'erreur
-      alert('Veuillez entrer un seuil valide.')
-    }
-  }
-
-  // Si un seuil est déjà défini dans le localStorage, le pré-remplir
-  const savedSeuil = localStorage.getItem('seuil')
-  if (savedSeuil) {
-    seuilInput.value = savedSeuil
-  }
+  // Initialiser les données
+  await fetchTransactions()
+  await fetchSeuil()
 })

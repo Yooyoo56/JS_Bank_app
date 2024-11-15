@@ -22,6 +22,10 @@ const compteBancaireSchema = new mongoose.Schema(
 			enum: ['Courant', 'Épargne'], // Liste des types possibles
 			default: 'Courant' // Valeur par défaut si non spécifiée
 		},
+		seuil: {
+			type: Number,
+			default: 0, // Valeur par défaut du seuil
+		},
 	},
 	{
 		timestamps: true,
