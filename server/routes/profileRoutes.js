@@ -1,6 +1,7 @@
 // routes/userRoutes.js
 const express = require("express");
 const router = express.Router();
+//middleware
 const auth = require("../middleware/authMiddleware");
 const User = require("../models/User");
 
@@ -16,29 +17,8 @@ router.get("/profile", auth, async (req, res) => {
 	}
 });
 
-// Middleware to verify the JWT and extract the userId
-const verifyToken = (req, res, next) => {
-	const token = req.header("Authorization")?.replace("Bearer ", ""); // Extract token
-
-	if (!token) {
-		return res
-			.status(401)
-			.json({ message: "Access denied. No token provided." });
-	}
-
-	try {
-		const decoded = jwt.verify(token, process.env.JWT_SECRET);
-		req.userId = decoded.userId; // Attach userId to the request object
-		next(); // Move to the next middleware/route handler
-	} catch (error) {
-		res.status(400).json({ message: "Invalid token." });
-	}
-};
-
-// Route to handle profile update
-
 // Route to update user profile
-router.put("/update", verifyToken, async (req, res) => {
+router.put("/profile/update", auth, async (req, res) => {
 	const { name, email } = req.body;
 	const userId = req.userId; // Get userId from the JWT token
 

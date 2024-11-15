@@ -81,37 +81,37 @@ const logoutUser = (req, res) => {
 	res.status(200).json({ message: "🎉 Successfully logout!" });
 };
 
-// Update User Profile
-const updateUserProfile = async (req, res) => {
-	const { name, email } = req.body;
-	const userId = req.userId; // Set by authMiddleware
+// // Update User Profile
+// const updateUserProfile = async (req, res) => {
+// 	const { name, email } = req.body;
+// 	const userId = req.userId; // Set by authMiddleware
 
-	try {
-		const user = await User.findById(userId);
-		if (!user) {
-			return res.status(404).json({ message: "User not found" });
-		}
+// 	try {
+// 		const user = await User.findById(userId);
+// 		if (!user) {
+// 			return res.status(404).json({ message: "User not found" });
+// 		}
 
-		// Update user information
-		user.name = name || user.name;
-		user.email = email || user.email;
+// 		// Update user information
+// 		user.name = name || user.name;
+// 		user.email = email || user.email;
 
-		// Save updated user to the database
-		const updatedUser = await user.save();
+// 		// Save updated user to the database
+// 		const updatedUser = await user.save();
 
-		res.status(200).json({
-			message: "Profile updated successfully",
-			user: {
-				id: updatedUser._id,
-				name: updatedUser.name,
-				email: updatedUser.email,
-			},
-		});
-	} catch (error) {
-		console.error("Error updating profile:", error.message);
-		res.status(500).json({ message: "Server error" });
-	}
-};
+// 		res.status(200).json({
+// 			message: "Profile updated successfully",
+// 			user: {
+// 				id: updatedUser._id,
+// 				name: updatedUser.name,
+// 				email: updatedUser.email,
+// 			},
+// 		});
+// 	} catch (error) {
+// 		console.error("Error updating profile:", error.message);
+// 		res.status(500).json({ message: "Server error" });
+// 	}
+// };
 
 // Get User Profile
 const getUserProfile = async (req, res) => {
@@ -134,5 +134,5 @@ module.exports = {
 	loginUser,
 	logoutUser,
 	getUserProfile,
-	updateUserProfile,
+	// updateUserProfile,
 };

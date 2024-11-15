@@ -32,7 +32,7 @@ const Profile = ({ token }) => {
 
     try {
       // Assuming userId is included in the token
-      const response = await axios.post(
+      const response = await axios.put(
         `http://localhost:5500/api/profile/update`,
         { name, email },
         {
