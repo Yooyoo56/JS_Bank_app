@@ -50,8 +50,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
   }
 
-  // Fonction pour récupérer les transactions
-  const fetchTransactions = async () => {
+  const fetchTransactions = async (filterDays = null) => {
     try {
       const response = await fetch(
         `http://localhost:5500/api/transactions/${compteId}`,
@@ -66,19 +65,35 @@ document.addEventListener('DOMContentLoaded', async function () {
       if (!response.ok) {
         throw new Error('Erreur lors de la récupération des transactions')
       }
+
       const transactions = await response.json()
       const transactionsList = Array.isArray(transactions)
         ? transactions
         : transactions.transactions || []
 
+      // Appliquer le filtre par date si filterDays est défini
+      let filteredTransactions = transactionsList
+      if (filterDays !== null) {
+        const cutoffDate = new Date()
+        cutoffDate.setDate(cutoffDate.getDate() - filterDays)
+        console.log('cutoffDate: ', cutoffDate)
+        filteredTransactions = transactionsList.filter((transaction) => {
+          const transactionDate = new Date(transaction.date)
+          return transactionDate >= cutoffDate
+        })
+        console.log('filteredTransactions: ', filteredTransactions)
+      }
+
+      // Affichage des transactions
       transactionsContainer.innerHTML = ''
-      if (transactionsList.length === 0) {
+      if (filteredTransactions.length === 0) {
         const noTransactionMessage = document.createElement('p')
         noTransactionMessage.className = 'text-center text-gray-500 mt-4'
-        noTransactionMessage.textContent = 'Aucune transaction pour ce compte'
+        noTransactionMessage.textContent =
+          'Aucune transaction pour la période sélectionnée'
         transactionsContainer.appendChild(noTransactionMessage)
       } else {
-        transactionsList.forEach((transaction) => {
+        filteredTransactions.forEach((transaction) => {
           const card = document.createElement('div')
           card.className = 'shadow p-5 rounded mb-4'
           card.innerHTML = `
@@ -107,6 +122,19 @@ document.addEventListener('DOMContentLoaded', async function () {
       alert('Impossible de récupérer les transactions.')
     }
   }
+
+  document.getElementById('filter-7days').addEventListener('click', () => {
+    console.log('click 7 dayss')
+    fetchTransactions(7) // Transactions des 7 derniers jours
+  })
+
+  document.getElementById('filter-30days').addEventListener('click', () => {
+    fetchTransactions(30) // Transactions des 30 derniers jours
+  })
+
+  document.getElementById('filter-90days').addEventListener('click', () => {
+    fetchTransactions(90) // Transactions des 90 derniers jours
+  })
 
   // Fonction pour mettre à jour le seuil sur le serveur
   const updateSeuilOnServer = async (newSeuil) => {
