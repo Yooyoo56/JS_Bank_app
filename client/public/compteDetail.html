@@ -3,45 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="stylesheet" href="compte.css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Détail du compte</title>
+    <title>Account details</title>
   </head>
   <body>
     <div class="container flex flex-col justify-center items-center">
       <nav class="flex justify-around items-center m-5">
         <a class="mx-2" href="/home">Home</a>
-        <a class="mx-2" href="/comptes-bancaires">Comptes bancaires</a> |
-        <a class="mx-2" href="/logout">Logout</a>
+        <a class="mx-2" href="/accounts">Accounts</a>
+        <a class="mx-2" href="/profile">Profile</a> 
+        <a class="mx-2" id="logout" href="/logout">Logout</a>
       </nav>
 
-      <h1 class="text-center font-bold mb-7 text-4xl">Nom du compte</h1>
+      <h1 class="text-center font-bold mb-7 text-4xl">Account name</h1>
 
       <p id="display-seuil" class="absolute top-10 right-3 text-2xl"></p>
-
       <div class="flex items-center justify-center">
         <button id="filter-7days" class="px-4 bg-emerald-600 text-white">
-          7 jours
+          7 days
         </button>
         <button id="filter-30days" class="px-4 bg-emerald-600 text-white">
-          30 jours
+          30 days
         </button>
         <button id="filter-90days" class="px-4 bg-emerald-600 text-white">
-          90 jours
+          90 days
         </button>
       </div>
 
+      <div class="fixed top-12 left-32">
+        <button id="download-csv" class="p-3 bg-blue-600 text-white rounded">
+          Download transactions (CSV)
+        </button>
+      </div>
       <div id="transactions-container"></div>
 
       <div class="fixed bottom-12 left-12">
         <button id="seuil-btn" class="p-3 bg-sky-600 text-white rounded">
-          Définir un seuil
-        </button>
-      </div>
-
-      <div class="fixed bottom-12 left-32">
-        <button id="download-csv" class="p-3 bg-blue-600 text-white rounded">
-          Télécharger les transactions (CSV)
+          Define a threshold
         </button>
       </div>
 
@@ -73,17 +72,17 @@
                     class="text-lg leading-6 font-medium text-gray-900"
                     id="modal-title"
                   >
-                    Définir un seuil
+                    Define a threshold
                   </h3>
                   <div class="mt-2">
                     <p class="text-sm text-gray-500">
-                      Veuillez renseigner le seuil à ne pas dépasser.
+                      Please fill in the threshold not to be exceeded.
                     </p>
                     <input
                       type="number"
                       id="seuil-input"
                       class="mt-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                      placeholder="Seuil"
+                      placeholder="Threshold"
                     />
                   </div>
                 </div>
@@ -95,14 +94,14 @@
                 class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                 id="close-modal"
               >
-                Fermer
+                Close
               </button>
               <button
                 type="button"
                 class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 id="save-seuil"
               >
-                Enregistrer
+                Save
               </button>
             </div>
           </div>
@@ -114,7 +113,7 @@
           id="addTransactionLink"
           class="p-3 bg-sky-600 text-white rounded"
           href=""
-          >Ajouter une transaction</a
+          >Add transaction</a
         >
       </div>
     </div>
@@ -132,7 +131,7 @@
         const addTransactionLink = document.getElementById('addTransactionLink')
         addTransactionLink.href = `/newTransaction.html?compteId=${compteId}`
       } else {
-        console.error("ID du compte non trouvé dans l'URL")
+        console.error("Account ID not found in the URL")
       }
     </script>
   </body>

@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Vérifier si compteId est présent
   if (!compteId) {
-    console.error("ID du compte non trouvé dans l'URL")
-    alert("ID du compte non trouvé dans l'URL")
+    console.error('Account ID not found in the URL')
+    alert('Account ID not found in the URL')
     return
   }
 
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // }
     } catch (error) {
       console.error('Erreur lors de la récupération du seuil:', error)
-      alert('Impossible de récupérer le seuil.')
+      alert('Unable to retrieve the threshold..')
       return 0
     }
   }
@@ -96,15 +96,15 @@ document.addEventListener('DOMContentLoaded', function () {
       const typeTransaction =
         document.querySelector("input[name='options']:checked").value ===
         'option-1'
-          ? 'Dépôt'
-          : 'Retrait'
+          ? 'Deposit'
+          : 'withdrawal'
       const montant = parseFloat(
         document.querySelector("input[type='number']").value,
       )
 
       // Validation de l'entrée
       if (!typeTransaction || isNaN(montant)) {
-        alert('Veuillez remplir tous les champs.')
+        alert('Please fill in all the fields.')
         return
       }
 
@@ -130,18 +130,18 @@ document.addEventListener('DOMContentLoaded', function () {
           return response.json()
         })
         .then(async () => {
-          alert('Transaction ajoutée avec succès!')
+          alert('Transaction added successfully!')
 
           // Récupérer à nouveau le solde et le seuil
           const currentBalance = await fetchCurrentBalance()
           const seuil = await fetchSeuil()
 
-          console.log('Comparaison du solde avec le seuil:')
-          console.log('Solde actuel:', currentBalance)
-          console.log('Seuil:', seuil)
+          // console.log('Comparaison du solde avec le seuil:')
+          // console.log('Solde actuel:', currentBalance)
+          // console.log('Seuil:', seuil)
 
           if (currentBalance < seuil) {
-            alert(`Attention ! Le solde est en dessous du seuil de ${seuil} €`)
+            alert(`Attention! The balance is below the threshold of ${seuil} €`)
           }
         })
         .catch((error) => {

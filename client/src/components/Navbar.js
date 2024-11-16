@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import './navBar.css' // Import the CSS
+import '../styles/navBar.css'
 
 const Navbar = ({ token, setToken }) => {
   const handleLogout = () => {
@@ -17,10 +17,13 @@ const Navbar = ({ token, setToken }) => {
         {token && (
           <>
             <li>
-              <Link to="/comptes-bancaires">Comptes Bancaires</Link>
+              <Link to="/accounts">Accounts</Link>
             </li>
             <li>
               <Link to="/profile">Profile</Link>
+            </li>
+            <li>
+              <Link to="/history">History</Link>
             </li>
             <li>
               <button className="logoutBtn" onClick={handleLogout}>

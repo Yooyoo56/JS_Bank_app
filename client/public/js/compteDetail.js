@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   if (!token) {
     console.error('Token manquant')
-    alert('Vous devez être connecté pour accéder à cette page.')
+    alert('You must be logged in to access this page.')
     return
   }
 
@@ -39,10 +39,10 @@ document.addEventListener('DOMContentLoaded', async function () {
       const data = await response.json()
       if (data && data.seuil !== undefined) {
         seuil = data.seuil // Mettre à jour le seuil en mémoire
-        displaySeuil.innerText = `Seuil : ${seuil} €`
+        displaySeuil.innerText = `Threshold : ${seuil} €`
       } else {
         seuil = 0 // Valeur par défaut en cas d'absence de seuil
-        displaySeuil.innerText = 'Seuil : 0 €'
+        displaySeuil.innerText = 'Threshold : 0 €'
       }
     } catch (error) {
       console.error('Erreur lors de la récupération du seuil:', error)
@@ -62,7 +62,14 @@ document.addEventListener('DOMContentLoaded', async function () {
           },
         },
       )
+
       if (!response.ok) {
+        // Vérifie si l'erreur est une 404 (aucune transaction trouvée)
+        if (response.status === 404) {
+          console.warn('Aucune transaction trouvée pour ce compte.')
+          displayNoTransactionsMessage()
+          return
+        }
         throw new Error('Erreur lors de la récupération des transactions')
       }
 
@@ -76,22 +83,16 @@ document.addEventListener('DOMContentLoaded', async function () {
       if (filterDays !== null) {
         const cutoffDate = new Date()
         cutoffDate.setDate(cutoffDate.getDate() - filterDays)
-        console.log('cutoffDate: ', cutoffDate)
         filteredTransactions = transactionsList.filter((transaction) => {
           const transactionDate = new Date(transaction.date)
           return transactionDate >= cutoffDate
         })
-        console.log('filteredTransactions: ', filteredTransactions)
       }
 
-      // Affichage des transactions
+      // Afficher les transactions filtrées
       transactionsContainer.innerHTML = ''
       if (filteredTransactions.length === 0) {
-        const noTransactionMessage = document.createElement('p')
-        noTransactionMessage.className = 'text-center text-gray-500 mt-4'
-        noTransactionMessage.textContent =
-          'Aucune transaction pour la période sélectionnée'
-        transactionsContainer.appendChild(noTransactionMessage)
+        displayNoTransactionsMessage()
       } else {
         filteredTransactions.forEach((transaction) => {
           const card = document.createElement('div')
@@ -102,7 +103,7 @@ document.addEventListener('DOMContentLoaded', async function () {
               <p class="px-3">${transaction.type}</p>
             </div>
             <div class="flex justify-between">
-              <p class="px-3">Montant :</p>
+              <p class="px-3">Amount :</p>
               <p class="px-3">${transaction.montant} €</p>
             </div>
             <div class="flex justify-between">
@@ -110,7 +111,7 @@ document.addEventListener('DOMContentLoaded', async function () {
               <p class="px-3">${new Date(transaction.date).toLocaleDateString()}</p>
             </div>
             <div class="flex justify-between">
-              <p class="px-3">Solde après transaction :</p>
+              <p class="px-3">Balance after transaction :</p>
               <p class="px-3">${transaction.soldeAprèsTransaction} €</p>
             </div>
           `
@@ -119,12 +120,21 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
     } catch (error) {
       console.error('Erreur lors de la récupération des transactions:', error)
-      alert('Impossible de récupérer les transactions.')
+      alert('Unable to retrieve the transactions.')
     }
   }
 
+  // Fonction pour afficher le message en cas d'absence de transactions
+  const displayNoTransactionsMessage = () => {
+    transactionsContainer.innerHTML = '' // Réinitialiser le conteneur
+    const noTransactionMessage = document.createElement('p')
+    noTransactionMessage.className = 'text-center text-gray-500 mt-4'
+    noTransactionMessage.textContent =
+      'Aucune transaction pour la période sélectionnée'
+    transactionsContainer.appendChild(noTransactionMessage)
+  }
+
   document.getElementById('filter-7days').addEventListener('click', () => {
-    console.log('click 7 dayss')
     fetchTransactions(7) // Transactions des 7 derniers jours
   })
 
@@ -159,15 +169,15 @@ document.addEventListener('DOMContentLoaded', async function () {
       // console.log(data)
       if (data && data.compte.seuil !== undefined) {
         seuil = data.compte.seuil // Mise à jour du seuil en mémoire
-        alert('Seuil mis à jour avec succès !')
+        alert('Threshold updated successfully')
         updateSeuilDisplay() // Mettre à jour l'affichage du seuil
         console.log('seuil success')
       } else {
-        alert('Échec de la mise à jour du seuil.')
+        alert('Threshold update failed.')
       }
     } catch (error) {
       console.error('Erreur lors de la mise à jour du seuil:', error)
-      alert('Impossible de mettre à jour le seuil.')
+      alert('Cannot update threshold.')
     }
   }
 
@@ -191,7 +201,15 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // Mettre à jour l'affichage du seuil
   const updateSeuilDisplay = () => {
-    displaySeuil.innerText = `Seuil : ${seuil} €` // Mettre à jour l'affichage avec la valeur en mémoire
+    displaySeuil.innerText = `Threshold: ${seuil} €`
+    displaySeuil.style.position = 'fixed'
+    displaySeuil.style.top = '150px' // Increased top value to position it further below the navbar
+    displaySeuil.style.left = '1100px' // Align to the left side
+    displaySeuil.style.fontSize = '24px'
+    displaySeuil.style.color = 'black'
+    displaySeuil.style.backgroundColor = 'white'
+    displaySeuil.style.padding = '5px 10px'
+    displaySeuil.style.borderRadius = '5px'
   }
 
   // Enregistrer le seuil dans la mémoire et sur le serveur
@@ -210,7 +228,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       // Fermer la modal
       modal.classList.add('hidden')
     } else {
-      alert('Veuillez entrer un seuil valide.')
+      alert('Please enter a valid threshold.')
     }
   }
 
@@ -223,38 +241,40 @@ document.addEventListener('DOMContentLoaded', async function () {
   await fetchTransactions()
   await fetchSeuil()
   updateSeuilDisplay()
-});
-
+})
 
 async function downloadTransactions() {
   try {
     //console.log("TOKEN "+ localStorage.getItem("token") );
-      const response = await fetch("http://localhost:5500/api/transactions/download-all", {
-          method: "GET",
-          headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-              'Content-Type': 'application/json',
-          },
-      });
+    const response = await fetch(
+      `http://localhost:5500/api/transactions/download/${compteId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    )
 
-      if (!response.ok) {
-          throw new Error("Failed to download transactions");
-      }
-      console.log("response :"+response);
+    if (!response.ok) {
+      throw new Error('Failed to download transactions')
+    }
+    console.log('response :' + response)
 
-      const blob = await response.blob(); // Convert response to a Blob
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "all_transactions.csv"; // Set the file name
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+    const blob = await response.blob() // Convert response to a Blob
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'all_transactions.csv' // Set the file name
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
   } catch (error) {
-      console.error("Error downloading transactions:", error);
-      alert("Error downloading transactions. Please try again.");
+    console.error('Error downloading transactions:', error)
+    alert('Error downloading transactions. Please try again.')
   }
 }
 
-const downloadButton = document.getElementById("download-csv");
-downloadButton.addEventListener("click",downloadTransactions);
+const downloadButton = document.getElementById('download-csv')
+downloadButton.addEventListener('click', downloadTransactions)

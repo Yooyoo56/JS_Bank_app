@@ -8,7 +8,10 @@ const AddCompte = () => {
     e.preventDefault() // Empêche le rechargement de la page lors de la soumission
 
     const accountData = {
-      name: localStorage.getItem('userName')!=null ?localStorage.getItem('userName') :"null",
+      name:
+        localStorage.getItem('userName') != null
+          ? localStorage.getItem('userName')
+          : 'null',
       nomCompte: accountName, // Exemple de nom de compte
       typeCompte: accountType,
     }
@@ -18,12 +21,12 @@ const AddCompte = () => {
     console.log('Token:', token) // Vérification du token
 
     if (!token) {
-      alert("Le token d'authentification est manquant.")
+      alert('The authentication token is missing.')
       return
     }
 
     try {
-      console.log("newAccount"+JSON.stringify(accountData));
+      console.log('newAccount' + JSON.stringify(accountData))
       const response = await fetch(
         'http://localhost:5500/api/accounts/add-account',
         {
@@ -35,7 +38,7 @@ const AddCompte = () => {
           body: JSON.stringify(accountData),
         },
       )
-      console.log(response);
+      console.log(response)
       if (!response.ok) {
         throw new Error('Erreur lors de la création du compte bancaire')
       }
@@ -51,13 +54,15 @@ const AddCompte = () => {
       setAccountType('')
     } catch (error) {
       console.error("Erreur lors de l'envoi des données : ", error)
-      alert("Erreur lors de l'envoi des données")
+      alert('Error sending data')
     }
   }
 
   return (
     <div>
-      <h1 className="text-center font-bold mb-7 text-4xl">Créer un compte</h1>
+      <h1 className="text-center font-bold mb-7 text-4xl">
+        Create an accouont
+      </h1>
 
       <form className="w-full" onSubmit={handleSubmit}>
         <div className="flex items-center mb-6 mx-2">
@@ -66,15 +71,15 @@ const AddCompte = () => {
               className="block text-gray-500 font-bold text-right mb-1 pr-4"
               htmlFor="name"
             >
-              Nom du compte
+              Account name
             </label>
           </div>
-          <div className="w-2/3">
+          <div className="w-1/3">
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-sky-500"
               id="name"
               type="text"
-              placeholder="Nom du compte"
+              placeholder="Account name"
               value={accountName}
               onChange={(e) => setAccountName(e.target.value)}
               required
@@ -88,7 +93,7 @@ const AddCompte = () => {
               className="block text-gray-500 font-bold text-right mb-1 pr-4"
               htmlFor="email"
             >
-              Type de compte
+              Type of account
             </label>
           </div>
           <div className="flex w-2/3">
@@ -106,7 +111,7 @@ const AddCompte = () => {
                 htmlFor="epargne"
                 className="ml-2 block text-sm leading-5 text-gray-900"
               >
-                Épargne
+                Savings account
               </label>
             </div>
             <div className="flex items-center mb-4 mx-2">
@@ -123,7 +128,7 @@ const AddCompte = () => {
                 htmlFor="courant"
                 className="ml-2 block text-sm leading-5 text-gray-900"
               >
-                Courant
+                Checking account
               </label>
             </div>
           </div>
@@ -134,7 +139,7 @@ const AddCompte = () => {
             className="shadow bg-sky-600 text-white hover:bg-sky-400 focus:shadow-outline focus:outline-none font-bold py-2 px-4 rounded"
             type="submit"
           >
-            Valider
+            Confirm
           </button>
         </div>
       </form>
