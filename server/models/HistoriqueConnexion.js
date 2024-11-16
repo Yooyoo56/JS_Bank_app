@@ -18,6 +18,8 @@ const HistoriqueConnexionSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    isSuspicious: { type: Boolean, default: false },
+
 });
 
 module.exports = mongoose.model('HistoriqueConnexion', HistoriqueConnexionSchema);

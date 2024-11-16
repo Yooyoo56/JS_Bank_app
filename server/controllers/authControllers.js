@@ -75,6 +75,7 @@ const loginUser = async (req, res) => {
 
 		// Ajouter l'ID de l'utilisateur à la requête pour l'historique
 		req.userId = user._id;
+        req.userEmail = user.email;
 
 		// Sauvegarder l'historique de connexion et envoyer la réponse une seule fois
 		await saveConnexionHistory(req); // Appeler la fonction de sauvegarde sans `res`
