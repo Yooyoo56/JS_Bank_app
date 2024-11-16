@@ -21,7 +21,7 @@ const AddCompte = () => {
     console.log('Token:', token) // Vérification du token
 
     if (!token) {
-      alert("Le token d'authentification est manquant.")
+      alert('The authentication token is missing.')
       return
     }
 
@@ -54,7 +54,7 @@ const AddCompte = () => {
       setAccountType('')
     } catch (error) {
       console.error("Erreur lors de l'envoi des données : ", error)
-      alert("Erreur lors de l'envoi des données")
+      alert('Error sending data')
     }
   }
 
@@ -71,15 +71,15 @@ const AddCompte = () => {
               className="block text-gray-500 font-bold text-right mb-1 pr-4"
               htmlFor="name"
             >
-              Noame of the account
+              Account name
             </label>
           </div>
-          <div className="w-2/3">
+          <div className="w-1/3">
             <input
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-sky-500"
               id="name"
               type="text"
-              placeholder="Nom du compte"
+              placeholder="Account name"
               value={accountName}
               onChange={(e) => setAccountName(e.target.value)}
               required

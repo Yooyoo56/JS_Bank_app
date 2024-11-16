@@ -3,24 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../src/style.css" />
-    <link rel="stylesheet" href="../src/components/navBar.css" />
+    <link rel="stylesheet" href="compte.css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Détail du compte</title>
+    <title>Account details</title>
   </head>
   <body>
     <div class="container flex flex-col justify-center items-center">
       <nav class="flex justify-around items-center m-5">
         <a class="mx-2" href="/home">Home</a>
-        <a class="mx-2" href="/comptes-bancaires">Accounts</a>
-        <a class="mx-2" href="/profile">Profile</a>
-        <a class="mx-2" href="/logout">Logout</a>
+        <a class="mx-2" href="/accounts">Accounts</a>
+        <a class="mx-2" href="/profile">Profile</a> 
+        <a class="mx-2" id="logout" href="/logout">Logout</a>
       </nav>
 
-      <h1 class="text-center font-bold mb-7 text-4xl">Nom du compte</h1>
+      <h1 class="text-center font-bold mb-7 text-4xl">Account name</h1>
 
       <p id="display-seuil" class="absolute top-10 right-3 text-2xl"></p>
-
       <div class="flex items-center justify-center">
         <button id="filter-7days" class="px-4 bg-emerald-600 text-white">
           7 days
@@ -115,7 +113,7 @@
           id="addTransactionLink"
           class="p-3 bg-sky-600 text-white rounded"
           href=""
-          >Add a transaction</a
+          >Add transaction</a
         >
       </div>
     </div>
@@ -133,7 +131,7 @@
         const addTransactionLink = document.getElementById('addTransactionLink')
         addTransactionLink.href = `/newTransaction.html?compteId=${compteId}`
       } else {
-        console.error("ID du compte non trouvé dans l'URL")
+        console.error("Account ID not found in the URL")
       }
     </script>
   </body>

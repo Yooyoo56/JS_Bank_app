@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="stylesheet" href="compte.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Add a transaction</title>
   </head>
@@ -11,9 +11,8 @@
     <div class="container flex flex-col justify-center items-center">
       <nav class="flex justify-around items-center m-5">
         <a class="mx-2" href="/home">Home</a>
-        <a class="mx-2" href="/comptes-bancaires">Accounts</a>
-        <a class="mx-2" href="/profile">Profile</a>
-        <a class="mx-2" href="/logout">Logout</a>
+        <a class="mx-2" href="/accounts">Accounts</a> 
+        <a class="mx-2" id="logout" href="/logout">Logout</a>
       </nav>
 
       <div>
@@ -77,7 +76,7 @@
                 class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                 id="name"
                 type="number"
-                placeholder="Montant"
+                placeholder="Amount"
               />
             </div>
           </div>

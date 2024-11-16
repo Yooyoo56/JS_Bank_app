@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import './navBar.css' // Import the CSS
+import '../styles/navBar.css'
 
 const Navbar = ({ token, setToken }) => {
   const handleLogout = () => {
@@ -17,7 +17,7 @@ const Navbar = ({ token, setToken }) => {
         {token && (
           <>
             <li>
-              <Link to="/comptes-bancaires">Accounts</Link>
+              <Link to="/accounts">Accounts</Link>
             </li>
             <li>
               <Link to="/profile">Profile</Link>

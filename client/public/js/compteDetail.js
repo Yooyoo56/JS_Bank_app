@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
     } catch (error) {
       console.error('Erreur lors de la récupération des transactions:', error)
-      alert('Impossible de récupérer les transactions.')
+      alert('Unable to retrieve the transactions.')
     }
   }
 
@@ -190,7 +190,15 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // Mettre à jour l'affichage du seuil
   const updateSeuilDisplay = () => {
-    displaySeuil.innerText = `Threshold : ${seuil} €` // Mettre à jour l'affichage avec la valeur en mémoire
+    displaySeuil.innerText = `Threshold: ${seuil} €`
+    displaySeuil.style.position = 'fixed'
+    displaySeuil.style.top = '150px' // Increased top value to position it further below the navbar
+    displaySeuil.style.left = '1100px' // Align to the left side
+    displaySeuil.style.fontSize = '24px'
+    displaySeuil.style.color = 'black'
+    displaySeuil.style.backgroundColor = 'white'
+    displaySeuil.style.padding = '5px 10px'
+    displaySeuil.style.borderRadius = '5px'
   }
 
   // Enregistrer le seuil dans la mémoire et sur le serveur

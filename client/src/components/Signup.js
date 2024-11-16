@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import $ from 'jquery'
-import './signupLogin.css'
+import '../styles/signupLogin.css'
 
 const Signup = () => {
   const [name, setName] = useState('')

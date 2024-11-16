@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import BankImage from './Bank.jpg'
-
-import './home.css'
+import BankImage from '../styles/Bank.jpg'
+import '../styles/home.css'
 
 const Home = () => {
   const [userName, setUserName] = useState('')

@@ -32,6 +32,10 @@ router.put("/profile/update", auth, async (req, res) => {
 		if (!user) {
 			return res.status(404).json({ message: "User not found." });
 		}
+		// Check if there are any changes to be made
+		if (user.name === name && user.email === email) {
+			return res.status(200).json({ message: "No changes detected." });
+		}
 
 		// Update user details
 		user.name = name;

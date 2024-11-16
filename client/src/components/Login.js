@@ -1,8 +1,7 @@
-// Login.js
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useNavigate, Link } from 'react-router-dom'
-import './signupLogin.css'
+import '../styles/signupLogin.css'
 
 const Login = ({ setToken }) => {
   const [email, setEmail] = useState('')

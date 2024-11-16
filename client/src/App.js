@@ -22,7 +22,7 @@ const App = () => {
 
         {/* Protected Routes */}
         <Route
-          path="/comptes-bancaires"
+          path="/accounts"
           element={
             token ? <ComptesBancaires /> : <Navigate to="/login" replace />
           }

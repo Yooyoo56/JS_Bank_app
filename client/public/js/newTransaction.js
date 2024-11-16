@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // }
     } catch (error) {
       console.error('Erreur lors de la récupération du seuil:', error)
-      alert('Impossible de récupérer le seuil.')
+      alert('Unable to retrieve the threshold..')
       return 0
     }
   }
@@ -96,15 +96,15 @@ document.addEventListener('DOMContentLoaded', function () {
       const typeTransaction =
         document.querySelector("input[name='options']:checked").value ===
         'option-1'
-          ? 'Dépôt'
-          : 'Retrait'
+          ? 'Deposit'
+          : 'withdrawal'
       const montant = parseFloat(
         document.querySelector("input[type='number']").value,
       )
 
       // Validation de l'entrée
       if (!typeTransaction || isNaN(montant)) {
-        alert('Veuillez remplir tous les champs.')
+        alert('Please fill in all the fields.')
         return
       }
 
