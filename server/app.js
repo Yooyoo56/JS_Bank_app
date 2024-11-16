@@ -1,3 +1,18 @@
+const fs = require("fs");
+const path = require("path");
+
+// Directory path for downloads folder
+const downloadsFolder = path.join(__dirname, "downloads");
+
+// Check if the downloads folder exists
+if (!fs.existsSync(downloadsFolder)) {
+	// If it doesn't exist, create it
+	fs.mkdirSync(downloadsFolder);
+	console.log("Downloads folder created");
+} else {
+	console.log("Downloads folder already exists");
+}
+
 const dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
@@ -40,3 +55,7 @@ app.use("/api", historiqueRoutes);
 
 const PORT = process.env.PORT || 5500;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT} 😉`));
+
+app.get("/", (req, res) => {
+	res.send("Server is running");
+});
