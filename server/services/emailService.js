@@ -64,7 +64,7 @@ const sendAlertEmail = async (userEmail, location = "Unknown") => {
     }
 };
 
- sendAlertEmail("yahiachiah2@gmail.com", "Test Location");
+//  sendAlertEmail("yahiachiah2@gmail.com", "Test Location");
 
 
 
