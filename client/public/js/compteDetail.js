@@ -62,7 +62,14 @@ document.addEventListener('DOMContentLoaded', async function () {
           },
         },
       )
+
       if (!response.ok) {
+        // Vérifie si l'erreur est une 404 (aucune transaction trouvée)
+        if (response.status === 404) {
+          console.warn('Aucune transaction trouvée pour ce compte.')
+          displayNoTransactionsMessage()
+          return
+        }
         throw new Error('Erreur lors de la récupération des transactions')
       }
 
@@ -76,22 +83,16 @@ document.addEventListener('DOMContentLoaded', async function () {
       if (filterDays !== null) {
         const cutoffDate = new Date()
         cutoffDate.setDate(cutoffDate.getDate() - filterDays)
-        console.log('cutoffDate: ', cutoffDate)
         filteredTransactions = transactionsList.filter((transaction) => {
           const transactionDate = new Date(transaction.date)
           return transactionDate >= cutoffDate
         })
-        console.log('filteredTransactions: ', filteredTransactions)
       }
 
-      // Affichage des transactions
+      // Afficher les transactions filtrées
       transactionsContainer.innerHTML = ''
       if (filteredTransactions.length === 0) {
-        const noTransactionMessage = document.createElement('p')
-        noTransactionMessage.className = 'text-center text-gray-500 mt-4'
-        noTransactionMessage.textContent =
-          'Aucune transaction pour la période sélectionnée'
-        transactionsContainer.appendChild(noTransactionMessage)
+        displayNoTransactionsMessage()
       } else {
         filteredTransactions.forEach((transaction) => {
           const card = document.createElement('div')
@@ -121,6 +122,16 @@ document.addEventListener('DOMContentLoaded', async function () {
       console.error('Erreur lors de la récupération des transactions:', error)
       alert('Unable to retrieve the transactions.')
     }
+  }
+
+  // Fonction pour afficher le message en cas d'absence de transactions
+  const displayNoTransactionsMessage = () => {
+    transactionsContainer.innerHTML = '' // Réinitialiser le conteneur
+    const noTransactionMessage = document.createElement('p')
+    noTransactionMessage.className = 'text-center text-gray-500 mt-4'
+    noTransactionMessage.textContent =
+      'Aucune transaction pour la période sélectionnée'
+    transactionsContainer.appendChild(noTransactionMessage)
   }
 
   document.getElementById('filter-7days').addEventListener('click', () => {
