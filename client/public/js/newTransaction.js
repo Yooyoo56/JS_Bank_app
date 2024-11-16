@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Vérifier si compteId est présent
   if (!compteId) {
-    console.error("ID du compte non trouvé dans l'URL")
-    alert("ID du compte non trouvé dans l'URL")
+    console.error('Account ID not found in the URL')
+    alert('Account ID not found in the URL')
     return
   }
 
@@ -130,18 +130,18 @@ document.addEventListener('DOMContentLoaded', function () {
           return response.json()
         })
         .then(async () => {
-          alert('Transaction ajoutée avec succès!')
+          alert('Transaction added successfully!')
 
           // Récupérer à nouveau le solde et le seuil
           const currentBalance = await fetchCurrentBalance()
           const seuil = await fetchSeuil()
 
-          console.log('Comparaison du solde avec le seuil:')
-          console.log('Solde actuel:', currentBalance)
-          console.log('Seuil:', seuil)
+          // console.log('Comparaison du solde avec le seuil:')
+          // console.log('Solde actuel:', currentBalance)
+          // console.log('Seuil:', seuil)
 
           if (currentBalance < seuil) {
-            alert(`Attention ! Le solde est en dessous du seuil de ${seuil} €`)
+            alert(`Attention! The balance is below the threshold of ${seuil} €`)
           }
         })
         .catch((error) => {

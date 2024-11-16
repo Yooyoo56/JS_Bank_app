@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', async function () {
               <p class="px-3">${transaction.type}</p>
             </div>
             <div class="flex justify-between">
-              <p class="px-3">Montant :</p>
+              <p class="px-3">Amount :</p>
               <p class="px-3">${transaction.montant} €</p>
             </div>
             <div class="flex justify-between">
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', async function () {
               <p class="px-3">${new Date(transaction.date).toLocaleDateString()}</p>
             </div>
             <div class="flex justify-between">
-              <p class="px-3">Solde après transaction :</p>
+              <p class="px-3">Balance after transaction :</p>
               <p class="px-3">${transaction.soldeAprèsTransaction} €</p>
             </div>
           `
@@ -159,15 +159,15 @@ document.addEventListener('DOMContentLoaded', async function () {
       // console.log(data)
       if (data && data.compte.seuil !== undefined) {
         seuil = data.compte.seuil // Mise à jour du seuil en mémoire
-        alert('Seuil mis à jour avec succès !')
+        alert('Threshold updated successfully')
         updateSeuilDisplay() // Mettre à jour l'affichage du seuil
         console.log('seuil success')
       } else {
-        alert('Échec de la mise à jour du seuil.')
+        alert('Threshold update failed.')
       }
     } catch (error) {
       console.error('Erreur lors de la mise à jour du seuil:', error)
-      alert('Impossible de mettre à jour le seuil.')
+      alert('Cannot update threshold.')
     }
   }
 
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       // Fermer la modal
       modal.classList.add('hidden')
     } else {
-      alert('Veuillez entrer un seuil valide.')
+      alert('Please enter a valid threshold.')
     }
   }
 
@@ -223,38 +223,40 @@ document.addEventListener('DOMContentLoaded', async function () {
   await fetchTransactions()
   await fetchSeuil()
   updateSeuilDisplay()
-});
-
+})
 
 async function downloadTransactions() {
   try {
     //console.log("TOKEN "+ localStorage.getItem("token") );
-      const response = await fetch("http://localhost:5500/api/transactions/download-all", {
-          method: "GET",
-          headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-              'Content-Type': 'application/json',
-          },
-      });
+    const response = await fetch(
+      'http://localhost:5500/api/transactions/download-all',
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    )
 
-      if (!response.ok) {
-          throw new Error("Failed to download transactions");
-      }
-      console.log("response :"+response);
+    if (!response.ok) {
+      throw new Error('Failed to download transactions')
+    }
+    console.log('response :' + response)
 
-      const blob = await response.blob(); // Convert response to a Blob
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "all_transactions.csv"; // Set the file name
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+    const blob = await response.blob() // Convert response to a Blob
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'all_transactions.csv' // Set the file name
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
   } catch (error) {
-      console.error("Error downloading transactions:", error);
-      alert("Error downloading transactions. Please try again.");
+    console.error('Error downloading transactions:', error)
+    alert('Error downloading transactions. Please try again.')
   }
 }
 
-const downloadButton = document.getElementById("download-csv");
-downloadButton.addEventListener("click",downloadTransactions);
+const downloadButton = document.getElementById('download-csv')
+downloadButton.addEventListener('click', downloadTransactions)

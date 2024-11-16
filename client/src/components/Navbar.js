@@ -17,7 +17,7 @@ const Navbar = ({ token, setToken }) => {
         {token && (
           <>
             <li>
-              <Link to="/comptes-bancaires">Comptes Bancaires</Link>
+              <Link to="/comptes-bancaires">Accounts</Link>
             </li>
             <li>
               <Link to="/profile">Profile</Link>

@@ -55,25 +55,22 @@ const ComptesBancaires = () => {
 
   return (
     <div className="w-11/12 mx-auto flex flex-col justify-center">
-      <h2 className="text-center font-bold mb-7 text-4xl">
-        Mes Comptes Bancaires
-      </h2>
+      <h2 className="text-center font-bold mb-7 text-4xl">My accounts</h2>
 
       <div className="shadow flex justify-center items-center p-5 mb-12">
         <h3 className="font-semibold">
-          Solde total : {totalSolde.toFixed(2)} €
+          Total balance : {totalSolde.toFixed(2)} €
         </h3>
       </div>
 
       <ul className="mx-3">
         {comptes.map((compte) => (
           <li key={compte._id} className="shadow p-5 rounded">
-            <div className="flex justify-between">
-              <p>Nom du compte :</p>
+            <div>
               <p>{compte.nomCompte}</p>
             </div>
             <div className="flex justify-between">
-              <p>Solde :</p>
+              <p>Balance :</p>
               <p>{compte.solde} €</p>
             </div>
 
@@ -81,7 +78,7 @@ const ComptesBancaires = () => {
               href={`compteDetail.html?compteId=${compte._id}`}
               className="underline text-black"
             >
-              Voir plus
+              More
             </a>
           </li>
         ))}
@@ -89,7 +86,7 @@ const ComptesBancaires = () => {
 
       <div className="absolute bottom-12 right-12">
         <Link className="p-3 bg-sky-600 text-white rounded" to="/add-account">
-          Créer un compte
+          Create an account
         </Link>
       </div>
     </div>
