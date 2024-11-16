@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   if (!token) {
     console.error('Token manquant')
-    alert('Vous devez être connecté pour accéder à cette page.')
+    alert('You must be logged in to access this page.')
     return
   }
 
@@ -39,10 +39,10 @@ document.addEventListener('DOMContentLoaded', async function () {
       const data = await response.json()
       if (data && data.seuil !== undefined) {
         seuil = data.seuil // Mettre à jour le seuil en mémoire
-        displaySeuil.innerText = `Seuil : ${seuil} €`
+        displaySeuil.innerText = `Threshold : ${seuil} €`
       } else {
         seuil = 0 // Valeur par défaut en cas d'absence de seuil
-        displaySeuil.innerText = 'Seuil : 0 €'
+        displaySeuil.innerText = 'Threshold : 0 €'
       }
     } catch (error) {
       console.error('Erreur lors de la récupération du seuil:', error)
@@ -124,7 +124,6 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   document.getElementById('filter-7days').addEventListener('click', () => {
-    console.log('click 7 dayss')
     fetchTransactions(7) // Transactions des 7 derniers jours
   })
 
@@ -191,7 +190,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   // Mettre à jour l'affichage du seuil
   const updateSeuilDisplay = () => {
-    displaySeuil.innerText = `Seuil : ${seuil} €` // Mettre à jour l'affichage avec la valeur en mémoire
+    displaySeuil.innerText = `Threshold : ${seuil} €` // Mettre à jour l'affichage avec la valeur en mémoire
   }
 
   // Enregistrer le seuil dans la mémoire et sur le serveur
@@ -229,7 +228,7 @@ async function downloadTransactions() {
   try {
     //console.log("TOKEN "+ localStorage.getItem("token") );
     const response = await fetch(
-      'http://localhost:5500/api/transactions/download-all',
+      `http://localhost:5500/api/transactions/download/${compteId}`,
       {
         method: 'GET',
         headers: {

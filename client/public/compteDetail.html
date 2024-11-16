@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="stylesheet" href="../src/style.css" />
+    <link rel="stylesheet" href="../src/components/navBar.css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Détail du compte</title>
   </head>
@@ -11,7 +12,8 @@
     <div class="container flex flex-col justify-center items-center">
       <nav class="flex justify-around items-center m-5">
         <a class="mx-2" href="/home">Home</a>
-        <a class="mx-2" href="/comptes-bancaires">Accounts</a> |
+        <a class="mx-2" href="/comptes-bancaires">Accounts</a>
+        <a class="mx-2" href="/profile">Profile</a>
         <a class="mx-2" href="/logout">Logout</a>
       </nav>
 
@@ -82,7 +84,7 @@
                       type="number"
                       id="seuil-input"
                       class="mt-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                      placeholder="Seuil"
+                      placeholder="Threshold"
                     />
                   </div>
                 </div>
@@ -113,7 +115,7 @@
           id="addTransactionLink"
           class="p-3 bg-sky-600 text-white rounded"
           href=""
-          >Ajouter une transaction</a
+          >Add a transaction</a
         >
       </div>
     </div>
