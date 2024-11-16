@@ -1,31 +1,22 @@
-# Node.js
+# Node.js modules
 node_modules/
 
-# npm package-lock files
+# Environnements et configurations locales
 package-lock.json
-yarn.lock
-
-# Build output
-build/
-
-# Testing
-coverage/
-
-# IDEs and Editors
-.vscode/
-.idea/
-
-# OS-specific files
-.DS_Store
-Thumbs.db
-
-# dotenv environment variables file
 .env
 
-# logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Fichiers de logs
+*.log
+
+# Cache et artefacts
+.DS_Store
+.cache/
+dist/
+Thumbs.db
+
+
+# Autres fichiers spécifiques
+*.temp
 
 # MacOS
 *.swp

@@ -1,0 +1,44 @@
+/* General Navbar Styles */
+
+nav {
+  background-color: white;
+  padding: 10px 40px;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+li {
+  margin-right: 20px;
+}
+
+li:last-child {
+  margin-right: 0;
+}
+
+a,
+button {
+  color: black;
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  font-size: 16px;
+}
+
+/* Button Specific Styles */
+button {
+  background-color: #1da1f2;
+  border: none;
+  cursor: pointer;
+}
+
+.logoutBtn {
+  color: #1da1f2;
+}

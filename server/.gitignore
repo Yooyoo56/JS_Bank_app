@@ -17,3 +17,5 @@ package-lock.json
 # Ignore other temporary files
 .DS_Store
 Thumbs.db
+
+*.temp

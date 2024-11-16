@@ -1,121 +1,93 @@
-// import React, { useState } from "react";
-// import axios from "axios";
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
-// const Signup = () => {
-// 	const [name, setName] = useState("");
-
-// 	const [email, setEmail] = useState("");
-// 	const [password, setPassword] = useState("");
-// 	const [message, setMessage] = useState("");
-
-// 	const handleSignup = async (e) => {
-// 		e.preventDefault();
-// 		try {
-// 			const response = await axios.post("http://localhost:5500/api/signup", {
-// 				email,
-// 				password,
-// 			});
-// 			setMessage(response.data.message || "😘 created user account!!");
-// 		} catch (error) {
-// 			setMessage(error.response?.data.message || "failed to create account 😣");
-// 		}
-// 	};
-
-// 	return (
-// 		<div>
-// 			<h2>💚 Sign up 💚</h2>
-// 			<form onSubmit={handleSignup}>
-// 				<input
-// 					type="text"
-// 					placeholder="Name"
-// 					value={name}
-// 					onChange={(e) => setName(e.target.value)}
-// 					required
-// 				/>
-// 				<input
-// 					type="email"
-// 					placeholder="example@gmail.com"
-// 					value={email}
-// 					onChange={(e) => setEmail(e.target.value)}
-// 				/>
-// 				<input
-// 					type="password"
-// 					placeholder="password"
-// 					value={password}
-// 					onChange={(e) => setPassword(e.target.value)}
-// 				/>
-// 				<button type="submit">Sign up </button>
-// 			</form>
-// 			{message && <p>{message}</p>}
-// 		</div>
-// 	);
-// };
-
-// export default Signup;
-
-import React, { useState } from "react";
+import $ from 'jquery'
+import './signupLogin.css'
 
 const Signup = () => {
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [error, setError] = useState("");
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault()
 
-		// 입력된 데이터 확인
-		console.log("Sending data:", { name, email, password });
+    console.log('Sending data:', { name, email, password })
 
-		try {
-			const response = await fetch("http://localhost:5500/api/signup", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ name, email, password }),
-			});
+    $.ajax({
+      url: 'http://localhost:5500/api/signup',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ name, email, password }),
+      success: () => {
+        localStorage.setItem('userName', name)
+        alert('Signup successful 😘!')
+        setTimeout(() => {
+          window.location.href = '/login'
+        }, 200)
+      },
+      error: (xhr) => {
+        const errorMessage = xhr.responseJSON?.message || 'Signup failed'
+        setError(errorMessage) // Display the actual error message
+        console.error('Error:', errorMessage)
+      },
+    })
+  }
 
-			const data = await response.json();
+  return (
+    <div className="auth-page">
+      <div className="container">
+        <div className="brand-title">Sign up</div>
 
-			if (!response.ok) {
-				setError(data.message || "Signup failed");
-				console.error("Error:", data.message);
-			} else {
-				localStorage.setItem("userName", name);
-				alert("Signup successful 😘!");
-			}
-		} catch (error) {
-			console.error("Signup error:", error);
-			setError("Network error: " + error.message);
-		}
-	};
+        {/* Signup Form */}
+        <form onSubmit={handleSubmit}>
+          <div className="inputs">
+            <label>Name</label>
+            <input
+              type="text"
+              placeholder="John Doe"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
 
-	return (
-		<form onSubmit={handleSubmit}>
-			<input
-				type="text"
-				placeholder="Name"
-				value={name}
-				onChange={(e) => setName(e.target.value)}
-				required
-			/>
-			<input
-				type="email"
-				placeholder="Email"
-				value={email}
-				onChange={(e) => setEmail(e.target.value)}
-				required
-			/>
-			<input
-				type="password"
-				placeholder="Password"
-				value={password}
-				onChange={(e) => setPassword(e.target.value)}
-				required
-			/>
-			<button type="submit">Sign Up</button>
-			{error && <p style={{ color: "red" }}>{error}</p>}
-		</form>
-	);
-};
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="example@test.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
 
-export default Signup;
+            <label>Password</label>
+            <input
+              type="password"
+              placeholder="Min 8 characters long"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+
+            <button type="submit">Sign Up</button>
+          </div>
+
+          {/* Error Message */}
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          {/* Link to Login Page */}
+          <br></br>
+          <p className="login-link">
+            Already have an account?{' '}
+            <Link to="/login" className="linkTitle">
+              {' '}
+              Login
+            </Link>
+          </p>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+export default Signup

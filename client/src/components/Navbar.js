@@ -1,50 +1,47 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import './navBar.css' // Import the CSS
 
 const Navbar = ({ token, setToken }) => {
-	// Handle logout functionality by clearing token from localStorage and resetting token in the state
-	const handleLogout = () => {
-		localStorage.removeItem("token"); // Remove token from localStorage
-		setToken(""); // Clear token from state
-	};
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    setToken('')
+  }
 
-	return (
-		<nav>
-			<ul>
-				<li>
-					<Link to="/home">Home</Link>
-				</li>
+  return (
+    <nav>
+      <ul>
+        <li>
+          <Link to="/home">Home</Link>
+        </li>
+        {token && (
+          <>
+            <li>
+              <Link to="/comptes-bancaires">Comptes Bancaires</Link>
+            </li>
+            <li>
+              <Link to="/profile">Profile</Link>
+            </li>
+            <li>
+              <button className="logoutBtn" onClick={handleLogout}>
+                Logout
+              </button>
+            </li>
+          </>
+        )}
+        {!token && (
+          <>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+            <li>
+              <Link to="/signup">Signup</Link>
+            </li>
+          </>
+        )}
+      </ul>
+    </nav>
+  )
+}
 
-				{/* Show Comptes Bancaires and Transactions links and logout button if user is logged in */}
-				{token && (
-					<>
-						<li>
-							<Link to="/accounts">Comptes Bancaires</Link>
-						</li>
-						<li>
-							<Link to="/transactions">Transactions</Link>{" "}
-							{/* New Transactions link */}
-						</li>
-						<li>
-							<button onClick={handleLogout}>Logout</button>
-						</li>
-					</>
-				)}
-
-				{/* Show login/signup links if user is not logged in */}
-				{!token && (
-					<>
-						<li>
-							<Link to="/login">Login</Link>
-						</li>
-						<li>
-							<Link to="/signup">Signup</Link>
-						</li>
-					</>
-				)}
-			</ul>
-		</nav>
-	);
-};
-
-export default Navbar;
+export default Navbar

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Détail du compte</title>
+  </head>
+  <body>
+    <div class="container flex flex-col justify-center items-center">
+      <nav class="flex justify-around items-center m-5">
+        <a class="mx-2" href="/home">Home</a>
+        <a class="mx-2" href="/comptes-bancaires">Comptes bancaires</a> |
+        <a class="mx-2" href="/logout">Logout</a>
+      </nav>
+
+      <h1 class="text-center font-bold mb-7 text-4xl">Nom du compte</h1>
+
+      <p id="display-seuil" class="absolute top-10 right-3 text-2xl"></p>
+
+      <div class="flex items-center justify-center">
+        <button id="filter-7days" class="px-4 bg-emerald-600 text-white">
+          7 jours
+        </button>
+        <button id="filter-30days" class="px-4 bg-emerald-600 text-white">
+          30 jours
+        </button>
+        <button id="filter-90days" class="px-4 bg-emerald-600 text-white">
+          90 jours
+        </button>
+      </div>
+
+      <div id="transactions-container"></div>
+
+      <div class="fixed bottom-12 left-12">
+        <button id="seuil-btn" class="p-3 bg-sky-600 text-white rounded">
+          Définir un seuil
+        </button>
+      </div>
+
+      <div class="fixed bottom-12 left-32">
+        <button id="download-csv" class="p-3 bg-blue-600 text-white rounded">
+          Télécharger les transactions (CSV)
+        </button>
+      </div>
+
+      <!-- Modal -->
+      <div
+        id="modal"
+        class="fixed z-10 inset-0 overflow-y-auto hidden"
+        aria-labelledby="modal-title"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div
+          class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block"
+        >
+          <div
+            class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+            aria-hidden="true"
+          ></div>
+
+          <span class="hidden" aria-hidden="true">&#8203;</span>
+
+          <div
+            class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:align-middle sm:max-w-lg"
+          >
+            <div class="bg-white px-4 pt-5 pb-4">
+              <div>
+                <div class="mt-3 text-center">
+                  <h3
+                    class="text-lg leading-6 font-medium text-gray-900"
+                    id="modal-title"
+                  >
+                    Définir un seuil
+                  </h3>
+                  <div class="mt-2">
+                    <p class="text-sm text-gray-500">
+                      Veuillez renseigner le seuil à ne pas dépasser.
+                    </p>
+                    <input
+                      type="number"
+                      id="seuil-input"
+                      class="mt-2 w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                      placeholder="Seuil"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3">
+              <button
+                type="button"
+                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                id="close-modal"
+              >
+                Fermer
+              </button>
+              <button
+                type="button"
+                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                id="save-seuil"
+              >
+                Enregistrer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fixed bottom-12 right-12">
+        <a
+          id="addTransactionLink"
+          class="p-3 bg-sky-600 text-white rounded"
+          href=""
+          >Ajouter une transaction</a
+        >
+      </div>
+    </div>
+
+    <script type="module" src="/js/compteDetail.js"></script>
+    <!-- Script pour ajouter le compteId en paramètre à l'URL -->
+    <script>
+      // Récupérer l'ID du compte depuis l'URL
+      const urlParams = new URLSearchParams(window.location.search)
+      const compteId = urlParams.get('compteId')
+
+      // Vérifier que compteId est présent
+      if (compteId) {
+        // Sélectionner le lien et ajouter le compteId en paramètre dans l'URL
+        const addTransactionLink = document.getElementById('addTransactionLink')
+        addTransactionLink.href = `/newTransaction.html?compteId=${compteId}`
+      } else {
+        console.error("ID du compte non trouvé dans l'URL")
+      }
+    </script>
+  </body>
+</html>

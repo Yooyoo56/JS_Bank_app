@@ -15,7 +15,7 @@ const authMiddleware = (req, res, next) => {
 		const decoded = jwt.verify(token, process.env.JWT_SECRET);
 		req.userId = decoded.userId; // Ajoute l'userId au req
 
-		console.log(" testetrg: "+req.userId);
+		console.log(" userId: "+req.userId);
 		next();
 	} catch (error) {
 		console.error("Erreur d'authentification:", error.message);
