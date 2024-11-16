@@ -2,8 +2,12 @@
 const express = require("express");
 const router = express.Router();
 const Account = require("../models/CompteBancaire");
+const { deleteCompteBancaire } = require("../controllers/compteBancaireController");
 const authMiddleware = require("../middleware/authMiddleware"); // Middleware pour protéger la route
 // const { createAccount } = require('../controllers/compteBancaireController'); // Import du controller
+
+//deleteCompteBancaire route
+router.delete("/delete/:compteId", authMiddleware, deleteCompteBancaire);
 
 // Route pour récupérer tous les comptes bancaires de l'utilisateur connecté
 router.get("/", authMiddleware, async (req, res) => {
