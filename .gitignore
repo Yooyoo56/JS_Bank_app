@@ -6,6 +6,8 @@ package-lock.json
 
 # Ignore .env files (for sensitive data like database URLs, API keys, etc.)
 *.env
+/server/.env
+/client/.env
 
 # Ignore logs
 *.log
