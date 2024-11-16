@@ -23,6 +23,9 @@ const Navbar = ({ token, setToken }) => {
               <Link to="/profile">Profile</Link>
             </li>
             <li>
+              <Link to="/history">History</Link>
+            </li>
+            <li>
               <button className="logoutBtn" onClick={handleLogout}>
                 Logout
               </button>

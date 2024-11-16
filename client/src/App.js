@@ -7,6 +7,7 @@ import AddCompte from './components/AddCompte'
 import Signup from './components/Signup'
 import ComptesBancaires from './components/ComptesBancaires'
 import Profile from './components/Profile'
+import History from './components/ConnectHistory'
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token') || '')
@@ -26,6 +27,10 @@ const App = () => {
           element={
             token ? <ComptesBancaires /> : <Navigate to="/login" replace />
           }
+        />
+        <Route
+          path="/history"
+          element={token ? <History /> : <Navigate to="/login" replace />}
         />
         <Route
           path="/add-account"

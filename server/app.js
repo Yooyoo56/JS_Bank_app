@@ -36,7 +36,7 @@ app.use("/api", authRoutes);
 app.use("/api/accounts", accountRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api", userRoutes);
-app.use("/api/historique", historiqueRoutes);
+app.use("/api", historiqueRoutes);
 
 const PORT = process.env.PORT || 5500;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT} 😉`));
