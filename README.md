@@ -210,24 +210,24 @@ loginUser("user@example.com", "password123");
 │ ├── /controllers # Controllers for handling API logic
 │ ├── /models # Database models (e.g., User, Transaction)
 │ ├── /routes # API route definitions
-│ ├── /servies # for mailServices
+│ ├── /services # for mailServices
 │ ├── app.js # Main entry point for the backend server
+│ ├── .env # Environment variables for the app
+│ ├── .gitignore # Git ignore file for backend
 │ └── /middleware # Middleware for authentication, validation, etc.
 │
 ├── /client # Frontend directory
 │ ├── /src # Source code for React application
 │ │ ├── /components # React components (e.g., Header, Footer, Dashboard)
-│ │ ├── /assets # Static assets (images, styles, etc.)
 │ │ ├── App.js # Main React component
 │ │ └── index.js # Entry point for the React app
+│ ├── public # Contains static assets like HTML, JS and configuration files
 │ ├── package.json # Frontend dependencies and scripts
-│ ├── .env # Environment variables for the React app
 │ └── .gitignore # Git ignore file for frontend
 │
 ├── package.json # Root project dependencies and scripts
 ├── .gitignore # Global gitignore (for backend and frontend)
-├── README.md # Project documentation (you already have this!)
-└── LICENSE # Project license
+└── README.md # Project documentation
 
 ```
 
