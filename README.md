@@ -124,7 +124,7 @@ The frontend communicates with the backend (Node.js/Express) through API request
 
 #### 1. **API Handling with $.ajax**
 
-The $.ajax method is a jQuery function used to send an asynchronous HTTP request to a backend API. In your example, it's used to send a POST request for user signup.
+The $.ajax method is a jQuery function used to send an asynchronous HTTP request to a backend API. It's used to send a POST request for user signup.
 
 ```javascript
 $.ajax({
@@ -157,9 +157,9 @@ $.ajax({
 
 Frontend (Axios/Fetch):
 
-You send a POST request to /api/login with the user's email and password.
-If the backend responds successfully, you store the token in localStorage or sessionStorage.
-If there's an error (invalid credentials or server error), you catch it and display the appropriate message to the user.
+We send a POST request to /api/login with the user's email and password.
+If the backend responds successfully, we store the token in localStorage or sessionStorage.
+If there's an error (invalid credentials or server error), we catch it and display the appropriate message to the user.
 Backend (Express):
 
 The backend validates the login data by checking if both the email and password are provided.
