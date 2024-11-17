@@ -39,8 +39,15 @@ app.use(
 );
 app.use(express.json());
 
+const uri = process.env.MONGO_URI;
+
+if (!uri) {
+	console.error("Error: MONGO_URI is not defined");
+	process.exit(1); // Exit if no URI is provided
+}
+
 mongoose
-	.connect(process.env.MONGO_URI, {
+	.connect(uri, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
@@ -54,7 +61,7 @@ app.use("/api", userRoutes);
 app.use("/api", historiqueRoutes);
 
 const PORT = process.env.PORT || 5500;
-app.listen(PORT, () => console.log(`Server is running on port ${PORT} 😉`));
+app.listen(PORT, () => console.log(`Server is running on port ${PORT} 🏃‍♂️...`));
 
 app.get("/", (req, res) => {
 	res.send("Server is running");
