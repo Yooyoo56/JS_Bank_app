@@ -58,7 +58,7 @@ Make sure you have the following installed:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/js-bank-app.git
+   git clone https://github.com/Yooyoo56/JS_Bank_app.git
    cd js-bank-app
    ```
 
@@ -66,7 +66,20 @@ Make sure you have the following installed:
 
 1. **Backend server: Running the app**
 
-- Connect to port 5500
+- Go to the server folder
+ 	```bash
+  	cd server/
+  ```
+- Create the file .env and put the following code : 
+
+  ```bash
+  JWT_SECRET=your-secure-secret-key  # Replace with a randomly generated strong key
+	MONGO_URI=mongodb://localhost:27017/users
+	EMAIL_USER=your-email@gmail.com
+	EMAIL_PASS=your-email-password
+	PORT=5500
+  ```
+- Install the dependencies and run the server : 
 
   ```bash
   npm install
@@ -75,7 +88,11 @@ Make sure you have the following installed:
 
 2. **Frontend - client: Running the app**
 
-- Connect to port 3000
+- Go to the client folder
+ 	```bash
+  	cd client/
+  ```
+- Install the dependencies and run the server : 
 
   ```bash
   npm install
@@ -233,6 +250,6 @@ loginUser("user@example.com", "password123");
 
 ### Contributing
 
-- Aissetou : https://github.com/aissetousacko
+- Aïssetou : https://github.com/aissetousacko
 - Yahia : https://github.com/yahiabgd
 - Yoojeong : https://github.com/Yooyoo56
